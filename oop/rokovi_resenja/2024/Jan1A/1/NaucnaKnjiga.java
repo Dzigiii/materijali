@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class NaucnaKnjiga extends Knjiga implements Iznajmljivanje{
+public class NaucnaKnjiga extends Knjiga{
 
     String naucnaOblast;
 
