@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Roman extends Knjiga implements Iznajmljivanje{
+public class Roman extends Knjiga{
 
     String zanr;
 
