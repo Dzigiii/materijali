@@ -1,0 +1,25 @@
+%{
+
+    #include<iostream>
+    #include<cstdlib>
+    #include<map>
+
+    extern int yylex();
+
+    void yyerror(std::string s) {
+        std::cerr << "Sintaksna greska:: " <<
+        s << std::endl;
+        exit(EXIT_FAILURE);
+    }
+
+    std:map<std::string, double> promenljive;
+
+
+
+%}
+
+
+
+%%
+
+
