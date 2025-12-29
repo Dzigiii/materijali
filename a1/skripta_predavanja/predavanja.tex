@@ -1,0 +1,944 @@
+\documentclass[11pt]{article}
+
+% ========== LANGUAGE AND ENCODING ==========
+\usepackage[utf8]{inputenc}      % Allows UTF-8 input (e.g., ć, č, š)
+\usepackage[T1]{fontenc}         % Correct output of special characters
+\usepackage[serbian]{babel}      % Serbian language (Latin script by default)
+
+% ========== MATH & UTILITIES ==========
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}      % only load xcolor once
+\usepackage{xparse}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable} % enable enhanced/breakable features
+\usepackage{titlesec}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18} % Ensures modern features are used
+
+\titleformat{\section}[block]
+  {\centering\normalfont\Huge\bfseries}
+  {\thesection.}{1em}{}
+\usepackage{makecell}
+\usepackage{amsthm}
+\usetikzlibrary{math}
+
+
+
+
+
+\pgfplotsset{compat=1.18}
+
+\newtcolorbox{defbox}{
+    colback = blue!10!white,
+    colframe = blue,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt
+}
+
+\newtcolorbox{teoremabox}{
+    colback = red!30!white,
+    colframe = red,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt
+}
+
+\newtcolorbox{stavbox}{
+    colback = orange!15!white,
+    colframe = orange,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt
+}
+
+\newtcolorbox{lemabox}{
+    colback = yellow!30!white,
+    colframe = yellow,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt
+}
+
+\newtcolorbox{tvrbox}{
+    colback = green!10!white,
+    colframe = green,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt
+}
+
+\newtcolorbox{primbox}{
+    colback = lime!10!white,
+    colframe = lime!70!black,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt
+}
+
+
+
+\newcommand{\sekvenca}[6]{%
+\begin{tikzpicture}[scale=1.1]
+    % X-axis
+    \pgfmathparse{#3 + 1} \let\xend\pgfmathresult
+    \draw[->] (0,0) -- (\xend,0) node[right] {#4};
+    % Y-axis
+    \draw[->] (0,0) -- (0,5) node[above] {$a_{#4}$};
+
+    % Y ticks
+    \foreach \y in {0.5,1,1.5,2,2.5,3,3.5,4,4.5} {
+        \draw (-0.1,\y) -- (0.1,\y) node[left=6pt] {\small \y};
+    }
+
+    % Sequence points
+    \foreach \n in {#2,...,#3} {
+        \pgfmathparse{#1}  % expression in \n
+        \let\an\pgfmathresult
+        \filldraw[blue] (\n,\an) circle (2pt);
+    }
+
+    % Lower horizontal line (if provided)
+    \if\relax\detokenize{#5}\relax
+        % nothing
+    \else
+      \draw[dashed, red] (0,#5) -- (\xend,#5) node[right] {\huge ${\text{ograničenje}} = #5$};
+    \fi
+
+    % Upper horizontal line (if provided)
+    \if\relax\detokenize{#6}\relax
+        % nothing
+    \else
+      \ifx#6+infty
+        % do nothing if +infty
+      \else
+        \draw[dashed, red] (0,#6) -- (\xend,#6) node[right] {\huge ${\text{ograničenje}} = #6$};
+      \fi
+    \fi
+\end{tikzpicture}
+}
+
+
+
+
+\newcounter{mathitem} 
+\renewcommand{\themathitem}{\arabic{mathitem}} 
+
+
+\theoremstyle{plain}
+\newtheorem{definicija}[mathitem]{Definicija}
+\newtheorem{primer}[mathitem]{Primer}   
+\newtheorem{teorema}[mathitem]{Teorema}     
+\newtheorem{tvrdjenje}[mathitem]{Tvrđenje}      
+\newtheorem{lema}[mathitem]{Lema}
+\newtheorem{stav}[mathitem]{Stav} 
+\makeatletter
+\newtheoremstyle{serbnodot}
+  {3pt}
+  {3pt}
+  {\normalfont}
+  {}
+  {\bfseries}
+  {}
+  {0.5em}
+  {\thmname{#1}}
+\makeatother
+
+\theoremstyle{serbnodot}
+\newtheorem*{dokaz}{Dokaz}
+
+\DeclareMathOperator{\dx}{dx}
+\renewcommand{\thesubsection}{\arabic{subsection}.}
+
+
+\titleformat{\section}[block]
+  {\centering\normalfont\Huge\bfseries}
+  {} 
+  {0pt}
+  {}
+
+
+\titleformat{\subsection}[block]
+  {\centering\normalfont\Large\bfseries} 
+  {\thesubsection} 
+  {1em} 
+  {}
+
+
+\NewDocumentCommand{\naslov}{O{blue!70!black} m}{%
+  \begin{center}
+    \vspace{1em}
+    {\color{#1}\Large\bfseries #2}
+    \vspace{1em}
+    \par
+  \end{center}
+}
+
+\newcommand{\podnaslov}[1]{%
+  \vspace{2em}
+  {\color{black}\Large\bfseries #1}
+  \vspace{0.5em}
+  \par
+}
+
+% Zadatak counter 
+\newcounter{zadatak}[section]
+\renewcommand{\thezadatak}{\arabic{zadatak}}
+
+
+
+% Boxed Definicija
+\let\olddefinicija\definicija
+\RenewDocumentEnvironment{definicija}{O{}}
+{
+    \begin{defbox}
+    \olddefinicija[#1]
+}
+{
+    \end{defbox}
+}
+
+% Boxed Primer
+\let\oldprimer\primer
+\RenewDocumentEnvironment{primer}{O{}}
+{
+    \begin{primbox}
+    \oldprimer[#1]
+}
+{
+    \end{primbox}
+}
+
+% Boxed Teorema
+\let\oldteorema\teorema
+\RenewDocumentEnvironment{teorema}{O{}}
+{
+    \begin{teoremabox}
+    \oldteorema[#1]
+}
+{
+    \end{teoremabox}
+}
+
+% Boxed Tvrdjenje
+\let\oldtvrdjenje\tvrdjenje
+\let\endoldtvrdjenje\endtvrdjenje
+
+\RenewDocumentEnvironment{tvrdjenje}{O{}}
+{
+    \begin{tvrbox}
+    \oldtvrdjenje[#1]\par\noindent\ignorespaces
+}
+{
+    \endoldtvrdjenje
+    \end{tvrbox}
+}
+% Boxed Lemma
+\let\oldlema\lema
+\RenewDocumentEnvironment{lema}{O{}}
+{
+    \begin{lemabox}
+    \oldlemma[#1]
+}
+{
+    \end{lemabox}
+}
+
+% Boxed stav
+\let\oldstav\stav
+\RenewDocumentEnvironment{stav}{O{}}
+{
+    \begin{stavbox}
+    \oldstav[#1]
+}
+{
+    \end{stavbox}
+}
+
+
+\NewDocumentEnvironment{zadatak}{O{} O{}}
+{%
+  \refstepcounter{zadatak}
+  \begin{tcolorbox}[
+    colback=blue!3,
+    colframe=blue!40!black,
+    sharp corners,
+    boxrule=0.8pt,
+    enhanced,
+    breakable,
+    title={\textbf{Zadatak \thezadatak\IfValueT{#1}{. #1}}},
+    #2
+  ]
+}
+{%
+  \end{tcolorbox}
+}
+
+
+
+\NewDocumentEnvironment{zadatakp}{m O{}}
+{%
+  \refstepcounter{zadatak}
+  \begin{tcolorbox}[
+    colback=blue!3,
+    colframe=blue!40!black,
+    sharp corners,
+    boxrule=0.8pt,
+    enhanced,
+    breakable,
+    title={\textbf{Zadatak \thezadatak. #1}},
+    #2
+  ]
+  \begin{enumerate}[label=\alph*)]
+}
+{%
+  \end{enumerate}
+  \end{tcolorbox}
+}
+
+
+\usepackage[a4paper, margin=2.5cm]{geometry}
+
+
+\begin{document}
+
+\section*{Neodređeni integrali}
+
+\subsection{Primitivna funkcija}
+
+\begin{definicija}
+Data je funkcija $ f:(a,b) \to \mathbb{R} $. Kažemo da je funkcija $ F:(a,b) \to \mathbb{R} $ \emph{primitivna funkcija} funkcije $ f $ na intervalu $ (a,b) $ ako je $ F $ diferencijabilna na $ (a,b) $ i ako važi $ F'(x) = f(x)$ $ \forall x \in (a,b) $.
+
+\end{definicija}
+
+
+\begin{primer}
+Pronaći primitivnu funkciju funkcija:
+\begin{enumerate}[label=\alph*)] 
+    \item $ f:\mathbb{R} \to \mathbb{R}, \quad f(x) = 0, \quad  \forall x \in \mathbb{R} $ \\
+    $F'(x) = f(x) = 0 \implies F(x) = c, c \in \mathbb{R}. $ 
+
+    \item $ f:\mathbb{R} \to \mathbb{R}, \quad f(x) = 3x^2, \quad  \forall x \in \mathbb{R} $ \\
+    $F'(x) = f(x) = 3x^2 \implies F(x) = x^3 + c, c \in \mathbb{R}. $ \\
+    Moguće funkcije: $ F_1(x) = x^3, \quad F_2(x) = x^3 + \sqrt{3}, \quad F_3(x) = x^3 - 505 $ itd.
+
+    \item $ f:\mathbb{R} \to \mathbb{R}, \quad f(x) = e^x, \quad  \forall x \in \mathbb{R} $ \\
+    $F'(x) = f(x) = e^x \implies F(x) = e^x + c, c \in \mathbb{R}. $ 
+
+
+    \item $ f:(0, +\infty) \to \mathbb{R}, \quad f(x) = \frac{1}{x}, \quad  \forall x \in (0,+\infty) $ \\
+    $F'(x) = f(x) = \frac{1}{x} \implies F(x) = \ln|x| + c, c \in \mathbb{R}. $ 
+
+
+  \end{enumerate}
+\end{primer}
+
+
+\begin{tvrdjenje}
+    Ako je $ F:(a,b) \to \mathbb{R} $ primitivna funkcija funkcije $ f:(a,b) \to \mathbb{R} $, onda je i svaka funkcija oblika $ F(x) + c, \forall c \in \mathbb{R} $ primitivna funkcija funkcije $ f $.
+\end{tvrdjenje}
+\begin{dokaz}
+        \par\hangindent=3.5em
+      Za neku primitivnu funkciju $ F $ funkcije $ f $ i za proizvoljan $ c \in \mathbb{R} $ posmatrajmo funkciju $ G:(a,b) \to \mathbb{R}, \quad G(x) = F(x) + c, \quad \forall x \in (a,b) $. Pošto je $ F $ diferencijabilna na $ (a,b) $, sledi da je i $ G $ diferencijabilna na $ (a,b) $ i važi:
+      \[
+        G'(x) = (F(x) + c)' = F'(x) + c' = f(x) + 0 = f(x), \quad \forall x \in (a,b).
+      \]
+      Dakle, $ G $ je primitivna funkcija funkcije $ f $.
+\end{dokaz}
+
+
+\begin{tvrdjenje}
+  Neka su $F_1, F_2:(a,b) \to \mathbb{R} $ primitivne funkcije funkcije $ f:(a,b) \to \mathbb{R} $. Tada postoji $ c \in \mathbb{R} $ takav da je $ F_1(x) = F_2(x) + c, \quad \forall x \in \mathbb{R} $.
+\end{tvrdjenje}
+\begin{dokaz}
+    \par\hangindent=3.5em
+    Za funkciju $ f $ imamo dve njene primitivne funkcije $ F_1^{'}(x) = f(x) $ i $f$: $ F_2^{'}(x) = f(x) $. Posmatrajmo funkciju $ G:(a,b) \to \mathbb{R}, \quad G(x) = F_1(x) - F_2(x), \quad \forall x \in (a,b) $. Pošto su $ F_1 $ i $ F_2 $ diferencijabilne na $ (a,b) $, sledi da je i $ G $ diferencijabilna na $ (a,b) $ i važi:
+    \[
+      G'(x) = (F_1(x) - F_2(x))' = F_1'(x) - F_2'(x) = f(x) - f(x) = 0, \quad \forall x \in (a,b).
+    \]
+    Iz ovoga sledi da je funkcija $ G $ konstantna na intervalu $ (a,b) $, tj. postoji $ c \in \mathbb{R} $ takav da je $ G(x) = c, \quad \forall x \in (a,b) $.
+  \end{dokaz}
+
+
+\begin{definicija}
+  Skup svih primitivnih funkcija funkcije $ f:(a,b) \to \mathbb{R} $ označavamo sa $ \int f(x) \, dx $ i nazivamo ga \emph{neodređeni integral} funkcije $ f $. Dakle,
+  \[
+    \int f(x) \, dx = \{ F(x) + c \mid c \in \mathbb{R} \},
+  \]
+  gde je $ F:(a,b) \to \mathbb{R} $ neka primitivna funkcija funkcije $ f $.
+\end{definicija}
+
+\begin{tabular}{ |c|c| }
+    \hline
+    \multicolumn{2}{|c|}{Tablica integrala:}                                                                                                                                                                                                        \\ \hline
+    $\displaystyle\alpha \in \mathbb{R} \backslash \left\{-1\right\},\ x\in\left(0, +\infty\right)\quad \int x^{\alpha} \dx$                   & $\displaystyle\frac{1}{\alpha + 1} x^{\alpha + 1} + C$                                             \\ \hline
+    $\displaystyle n \in \mathbb{N},\ x \in \mathbb{R} \quad \int x^{n} \dx$                                                                   & $\displaystyle\frac{1}{n + 1} x^{n + 1} + C$                                                       \\ \hline
+    $\displaystyle n \in \mathbb{N}\backslash\left\{1\right\},\ x \in\mathbb{R}\backslash\left\{0\right\}\quad \int x^{-n} \dx $               &
+    \makecell{
+    $\displaystyle\frac{1}{1-n} x^{1-n} + C_1,\ x \in \left(-\infty, 0\right)$                                                                                                                                                                      \\
+        $\displaystyle\frac{1}{1-n} x^{1-n} + C_2,\ x \in \left(0, +\infty\right)$
+    }                                                                                                                                                                                                                                               \\  \hline
+    $\displaystyle x \in \mathbb{R} \quad \int \frac{1}{x} \dx$                                                                                     &
+    \makecell{ $\ln |x| + C_1,\ x \in \left(-\infty, 0\right)$                                                                                                                                                                                      \\
+    $\displaystyle\ln |x| + C_2,\ x \in \left(0, +\infty\right)$}                                                                                                                                                                                   \\ \hline
+    $\displaystyle a > 0,\ a\neq 1,\ x \in \mathbb{R} \quad \int a^x \dx$                                                                      & $ \displaystyle\frac{1}{\ln a} a^x + C$                                                            \\ \hline
+    $\displaystyle x \in \mathbb{R} \quad \int \sin x \dx$                                                                                     & $ \displaystyle-\cos x + C$                                                                        \\ \hline
+    $\displaystyle x \in \mathbb{R} \quad \int \cos x \dx$                                                                                     & $ \displaystyle\sin x + C$                                                                         \\ \hline
+    $\displaystyle x \in \bigcup_{k \in \mathbb{Z}} \left(\frac{\pi}{2} + k\pi, \frac{3\pi}{2} + k\pi\right)\quad \int \frac{1}{\cos^2 x} \dx$ & $ \tg x + C_k,\ x \in \left(\frac{\pi}{2} + k\pi, \frac{3\pi}{2} + k\pi\right),\ k \in \mathbb{Z}$ \\ \hline
+    $\displaystyle x \in \bigcup_{k \in \mathbb{Z}} \left(k\pi, \pi + k\pi\right)\quad \int \frac{1}{\sin^2 x} \dx$                            & $ \displaystyle-\ctg x + C_k,\ x \in \left(k\pi, \pi + k\pi\right),\ k \in \mathbb{Z}$             \\ \hline
+    $\displaystyle x \in \left(-1, 1\right) \quad \int \frac{1}{\sqrt{\left(1 - x^2\right)}} \dx                      $                        & $ \arcsin x + C$                                                                                   \\ \hline
+    $\displaystyle x \in \mathbb{R} \quad \int \frac{1}{1+x^2} \dx$                                                                            & $ \arctg x + C$                                                                                    \\ \hline
+    $\displaystyle x \in \mathbb{R}\backslash \left\{0\right\} \quad \int x^{0} \dx$                                                           &
+    \makecell{
+    $x + C_1,\ x \in \left(-\infty, 0\right)$                                                                                                                                                                                                       \\
+        $x + C_2,\ x \in \left(0, +\infty\right)$
+    }                                                                                                                                                                                                                                               \\ \hline
+\end{tabular}
+
+\begin{tvrdjenje}{\textbf{Linearnost neodređenog integrala.}}
+  Neka su $ f,g:(a,b) \to \mathbb{R} $ funkcije koje imaju primitivne funkcije na intervalu $ (a,b) $. Tada i $ \lambda f(x) + \mu g(x) $ ima primitivnu funkciju na intervalu $ (a,b) $ za sve $ \lambda, \mu \in \mathbb{R} $ i važi:
+  \[
+    \int (\lambda f(x) + \mu g(x)) \, dx = \lambda \int f(x) \, dx + \mu \int g(x) \, dx.
+  \]
+\end{tvrdjenje}
+\begin{dokaz}
+    
+    \par\hangindent=3.5em
+    Neka su $ F $ i $ G $ primitivne funkcije funkcija $ f $ i $ g $, redom. Hoćemo da pokažemo da je funckija $ \lambda F + \mu G $ primitivna za $ \lambda f + \mu g $. 
+    \begin{align*}
+      (\lambda F(x) + \mu G(x))' &= \lambda F'(x) + \mu G'(x) = \lambda f(x) + \mu g(x). \\
+      & = \int (\lambda f(x) + \mu g(x)) \, dx = \lambda F(x) + \mu G(x) + C, \quad C \in \mathbb{R}.\\
+      & = \lambda \int f(x) \, dx + \mu \int g(x) \, dx.
+    \end{align*}
+\end{dokaz}
+
+
+\begin{tvrdjenje} {\textbf{Parcijalna integracija.}} Neka su $u, v:(a,b) \to \mathbb{R} $ diferencijabilne funkcije na intervalu $ (a,b) $. Tada važi:
+\[
+  \int u(x)v'(x) \, dx = u(x)v(x) - \int v(x)u'(x) \, dx.
+\]
+\end{tvrdjenje}
+\begin{dokaz}
+    \par\hangindent=3.5em
+    \begin{align*}
+      (u(x)v(x))' &= u'(x)v(x) + u(x)v'(x) \\
+      \intertext{Zatim integral sa obe strane:} \\
+      \int (u(x)v(x))' \, dx &= \int u'(x)v(x) \, dx + \int u(x)v'(x) \, dx \\
+      \intertext{Izdvajamo:$ \int u(x)v'(x)dx:$} 
+      \int u(x)v'(x) \, dx &= \int (u(x)v(x))' \, dx - \int u'(x)v(x) \, dx \\
+      &= u(x)v(x) - \int v(x)u'(x) \, dx.
+    \end{align*}
+\end{dokaz}
+
+
+\begin{primer}
+  \begin{align*}
+    \int \log x \, dx 
+    &= 
+    \left\{
+    \begin{array}{l}
+    u(x) = \log x \;\Rightarrow\; du = \frac{1}{x} dx \\
+    dv = dx \;\Rightarrow\; v(x) = x
+    \end{array}
+    \right\} \\
+    &= u v - \int v \, du \\
+    &= x \log x - \int x \cdot \frac{1}{x} \, dx \\
+    &= x \log x - \int dx \\
+    &= x \log x - x + c, \quad c \in \mathbb{R}.
+\end{align*}
+
+\end{primer}
+
+
+\begin{primer}
+  \begin{align*}
+    \int \underbrace{e^x}_{u} \, \underbrace{\cos x \, dx}_{dv}
+    &= 
+    \left\{
+      \begin{array}{l}
+          u = e^x \;\Rightarrow\; du = e^x \, dx \\
+          dv = \cos x \, dx \;\Rightarrow\; v = \sin x
+      \end{array}
+    \right\} \\
+    &= e^x \sin x - \int e^x \sin x \, dx \\
+    &= e^x \sin x - 
+    \int \underbrace{e^x}_{u} \, \underbrace{\sin x \, dx}_{dv}
+    =
+    \left\{
+      \begin{array}{l}
+          u = e^x \;\Rightarrow\; du = e^x \, dx \\
+          dv = \sin x \, dx \;\Rightarrow\; v = -\cos x
+      \end{array}
+    \right\} \\
+    &= e^x \sin x - \left(-e^x \cos x + \int e^x \cos x \, dx \right) \\
+    \intertext{Ovde uvodimo oznaku $ I = \int e^x \cos x \, dx $ pošto se ponavlja isti integral kao početni:}
+    I &= e^x \sin x + e^x \cos x - I \\
+    2I &= e^x (\sin x + \cos x) \\
+    I &= \frac{e^x (\sin x + \cos x)}{2} + c,\qquad c \in \mathbb{R}.
+\end{align*}
+
+
+
+\end{primer}
+
+\begin{tvrdjenje}
+  Neka je data funkcija $ f:(a,b) \to \mathbb{R} $  i njena primitivna funkcija $ F:(a,b) \to \mathbb{R} $. Ako je funkcija $ \rho:(\alpha, \beta) \to (a,b) $ diferencijabilna na intervalu $ (\alpha, \beta) $, tada važi:
+  \[
+    \int f(\rho(x)) \cdot \rho'(x) \, dt = F(\rho(x)) + c, \quad c \in \mathbb{R}. \tag{1}
+  \]
+\end{tvrdjenje}
+\begin{dokaz}
+    \par\hangindent=3.5em
+    Proverimo da li je izvod funkcije $ F(\rho(x)) + C $ jednak funkciji $ f(\rho(t)) \cdot \rho'(t) $ (tj. funckiji pod integralom):
+  
+    \[ \left( F(\rho(x)) + C \right)' = (F\circ\rho)'(x) = F'(\rho(x)) \cdot \rho'(x) = f(\rho(x)) \cdot \rho'(x) = (1)\]
+  
+  
+\end{dokaz}
+
+\begin{primer}
+  \begin{align*}
+    \int \frac{\dx}{x+3} &= \left\{ \begin{array}{l}
+      t = x + 3, \quad dt = dx, \quad x > -3 \\
+      \text{ili } x < -3, \quad dt = dx
+      \end{array}
+      \right\} \\
+    &= \int \frac{dt}{t} = \ln|t| + c = \ln|x+3| + c, \quad c \in \mathbb{R}.
+  \end{align*}
+\end{primer}
+
+\begin{primer}
+  \begin{align*}
+    \int \frac{x^2}{1+x^3} \dx &= \left\{ \begin{array}{l}
+      t = 1 + x^3, \\ dt = 3x^2 \, dx, \\
+      dt \cdot \frac{1}{3} = x^2 \, dx.
+      \end{array}
+      \right\} \\
+    &= \int \frac{1}{t} \cdot \frac{1}{3} \cdot dt = \frac{1}{3} \int \frac{dt}{t} = \frac{1}{3} \ln|t| + c = \frac{1}{3} \ln|1+x^3| + c, \quad c \in \mathbb{R}.
+  \end{align*}
+\end{primer}
+
+\newpage
+
+\subsection{Tehnike integracija}
+
+\begin{enumerate}
+    \item \( \int \sin^n(x) \cdot \cos^m(x) \, dx \)
+    
+    \begin{itemize}
+      \item \( n = 2k + 1 \), odnosno za neparno n važi:
+      \[
+        \int (\sin^2(x))^k \cdot \sin(x) \cdot \cos^m(x) \dx = \int (1 - \cos^2(x))^k \cdot \sin(x) \cdot \cos^m(x) \dx
+      \]
+      Koristimo smenu \( t = \cos(x) \), \( dt = -\sin(x) \, dx \).
+      \item \( m = 2l + 1 \), odnosno za neparno m važi:
+      \[
+        \int \sin^n(x) \cdot (\cos^2(x))^l \cdot \cos(x) \dx = \int \sin^n(x) \cdot (1 - \sin^2(x))^l \cdot \cos(x) \dx
+      \]
+      Koristimo smenu \( t = \sin(x) \), \( dt = \cos(x) \, dx \).
+      \item \( n = 2k \) i \( m = 2l \), odnosno kada su nam i $m$ i $n$ parni, svodimo na niži stepen koristeći formule:
+      \[
+        cos(2x) = cos^2(x) - sin^2(x), \quad cos^2(x) = \frac{1 + cos(2x)}{2}, \quad sin^2(x) = \frac{1 - cos(2x)}{2}
+      \]
+    \end{itemize}
+
+    \item 
+      \begin{itemize}
+        \item  \( \int(\sin(ax) \cdot \cos(bx)) \, dx \)
+        \item  \( \int(\sin(ax) \cdot \sin(bx)) \, dx \)
+        \item  \( \int(\cos(ax) \cdot \cos(bx)) \, dx \)
+        
+        Koristimo formule:
+        \[
+          \sin(\alpha) \cdot \cos(\beta) = \frac{1}{2} [\sin(\alpha + \beta) + \sin(\alpha - \beta)]
+        \]
+        \[
+          \sin(\alpha) \cdot \sin(\beta) = \frac{1}{2} [\cos(\alpha - \beta) - \cos(\alpha + \beta)]
+        \]
+        \[
+          \cos(\alpha) \cdot \cos(\beta) = \frac{1}{2} [\cos(\alpha + \beta) + \cos(\alpha - \beta)]
+        \]
+
+      \end{itemize}
+
+      \item  \( \int\frac{P(x)}{Q(x)} \, dx \) 
+    
+      \item  \( \int R(\sin x, \cos x) \, dx = I\)
+
+      Ovo je integral racionalne funkcije koja u brojiocu i u imeniocu ima polinom po \( \sin(x) \\
+      \cos(x)\).
+      Koristi se smena: \\ 
+      \( t = \tan\left(\frac{x}{2}\right) \), \( dx = \frac{2}{1+t^2} dt \), \( \sin x = \frac{2t}{1+t^2} \), \( \cos x = \frac{1-t^2}{1+t^2} \).
+
+      \item \( \int R(x, \sqrt{x^2 - 1}) \, dx = I \) \\
+      Koristi se smena \( x = \frac{1}{\cos(t)} \), \( \cos(t) = \frac{1}{x} \), \( t = \arccos\left(\frac{1}{x}\right) \), \( dx = \frac{\sin(t)}{\cos^2(t)} dt \), \( \sqrt{x^2 - 1} = \tan(t) \).
+
+      \item \( \int R(x, \sqrt{x^2 + 1}) \, dx = I \) \\
+      Koristi se smena \( x = \tan(t) \), \( \tan(t) = x \), \( t = \arctan(x) \), \( dx = \frac{1}{\cos^2(t)} dt \), \( \sqrt{x^2 + 1} = \frac{1}{\cos(t)} \).
+
+      \item \( \int R(x, \sqrt[n]{\frac{ax+b}{cx+d}}) \, dx \) \\
+      Koristi se smena \( t = \sqrt[n]{\frac{ax+b}{cx+d}} \), \( t^n = \frac{ax+b}{cx+d} \).
+\end{enumerate}
+\newpage
+
+\section{Određeni integrali}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+
+    
+    \draw[->] (-0.3,0) -- (5.2,0) node[right] {$x$};
+    \draw[->] (0,-0.3) -- (0,3.5) node[above] {$y$};
+
+    
+    \draw[thick,blue,domain=0.5:4.5,samples=100] 
+        plot (\x,{0.5 + 0.5*(\x-2)^2});
+
+    
+    \draw[dashed] (1,0) -- (1,{0.5 + 0.5*(1-2)^2});
+    \draw[dashed] (4,0) -- (4,{0.5 + 0.5*(4-2)^2});
+
+    \node[below] at (1,0) {$a$};
+    \node[below] at (4,0) {$b$};
+
+    
+    \fill[blue!20,domain=1:4,smooth,samples=100]
+        (1,0) -- plot (\x,{0.5 + 0.5*(\x-2)^2}) -- (4,0) -- cycle;
+
+    
+    %\foreach \x in {1.2,1.4,1.6,1.8,2.0,2.2,2.4,2.6,2.8,3.0,3.2,3.4,3.6,3.8} {
+      %  \draw[dashed,gray]
+     %       (\x,0) -- (\x,{0.5 + 0.5*(\x-2)^2});
+    %}
+
+    
+    \node at (2.1,2.5) {$P = \int_a^b f(x)\,dx$};
+    
+
+\end{tikzpicture}
+\end{center}
+
+Neodređeni integral funkcije $ f $ je definisan preko izvoda, dok je određeni integral funkcije $ f $ definisan pomoću limesa niza.
+
+\begin{center}
+
+\begin{tikzpicture}[scale=1.2]
+
+   
+    \draw[->] (-0.4,0) -- (5.5,0) node[right] {$x$};
+    \draw[->] (0,-0.4) -- (0,3.5) node[above] {$y$};
+
+    
+    \draw[thick,blue,domain=0.5:5,samples=200]
+        plot (\x,{sin(\x r) + 2});
+
+    
+    \draw[dashed] (1,0) -- (1,{sin(1 r) + 2});
+    \draw[dashed] (5,0) -- (5,{sin(5 r) + 2});
+    \node[below] at (1,0) {$a$};
+    \node[below] at (5,0) {$b$};
+
+    
+    \foreach \x in {1.0,2.0,3.0,4.0} {
+        \pgfmathsetmacro{\y}{sin(\x r) + 2}
+        
+        \draw[gray,fill=green!25,opacity=0.7]
+            (\x,0) rectangle (\x+1.0, \y);
+        
+        \draw[dashed,gray] (\x+1.0,0) -- (\x+1.0,{sin((\x+1.0) r) + 2});
+    }
+    \node at (3.5,2.5) {$n = 4$};
+
+\end{tikzpicture}
+
+\begin{tikzpicture}[scale=1.2]
+
+    
+    \draw[->] (-0.4,0) -- (5.5,0) node[right] {$x$};
+    \draw[->] (0,-0.4) -- (0,3.5) node[above] {$y$};
+
+    
+    \draw[thick,blue,domain=0.5:5,samples=200]
+        plot (\x,{sin(\x r) + 2});
+
+    
+    \draw[dashed] (1,0) -- (1,{sin(1 r) + 2});
+    \draw[dashed] (5,0) -- (5,{sin(5 r) + 2});
+    \node[below] at (1,0) {$a$};
+    \node[below] at (5,0) {$b$};
+
+    
+    \foreach \x in {1.0,1.8,2.6,3.4,4.2} {
+        \pgfmathsetmacro{\y}{sin(\x r) + 2}
+        
+        \draw[gray,fill=green!25,opacity=0.7]
+            (\x,0) rectangle (\x+0.8, \y);
+
+        \draw[dashed,gray] (\x+0.8,0) -- (\x+0.8,{sin((\x+0.8) r) + 2});
+    }
+    \node at (3.1,2.8) {$n = 5$};
+
+\end{tikzpicture}
+
+\end{center}
+\text{U n-tom koraku podelimo interval $ [a,b] $ na $ n $ jednakih delova.}
+\begin{center}
+\begin{tikzpicture}[scale=1.2]
+
+    % Osovina x
+    \draw[->] (-0.3,0) -- (6.5,0) node[right] {$x$};
+
+    % Rezovi intervala (n=6 primer)
+    \foreach \x in {0,1,2,3,4,5,6} {
+        \draw[thick] (\x,0.1) -- (\x,-0.1);
+    }
+
+    % Oznake
+    \node[below] at (0,-0.1) {$x_0 = a$};
+    \node[below] at (1,-0.1) {$x_1$};
+    \node[below] at (2,-0.1) {$x_2$};
+    \node[below] at (3,-0.1) {$\cdots$};
+    \node[below] at (4,-0.1) {$x_{n-2}$};
+    \node[below] at (5,-0.1) {$x_{n-1}$};
+    \node[below] at (6,-0.1) {$x_n = b$};
+
+    % Napis za širinu segmenata
+    \draw[<->] (0,0.5) -- (1,0.5);
+    \node at (0.5,0.8) {$\Delta x = \frac{b-a}{n}$};
+
+\end{tikzpicture}
+\end{center}
+\text{Sada ćemo da definišemo podeone tačke intervala $[a,b]$}
+\[ x_0 = a < x_1 = a + \frac{b-a}{n} < x_2 = a + \frac{2 \cdot (b-a)}{n} < \dots < x_{n-1} = a + \frac{(n-1) \cdot (b - a)}{n} < x_n = b\]
+
+
+FALI DEO
+
+\begin{definicija}
+  \(\int_{a}^{b} f(x) \, dx = \lim_{n \to \infty} S_n. \) Vrednost \(\lim_{n \to \infty} S_n\) (koja je konačna) nazivamo \emph{određeni integral} funkcije \( f \) na intervalu \([a,b]\) i označavamo sa \(\int_{a}^{b} f(x) \, dx\).
+\end{definicija}
+
+Niz \( S_n \) konvergira jer je Košijev niz. Da bismo pokazali da je Košijev niz, možemo koristiti stvojstvo neprikidnosti funkcije \( f \).
+Ovom definicijom određen integral naziva se Košijevim integralom. \\
+Određeni integral može da se definiše i za prekidne funkcije uz pretpotavku da je funkcija ograničena. Taj integral naziva se \textbf{Rimanov integral.} 
+
+\begin{primer}
+  \( f(x) = x \) \\
+  \begin{align*}
+    \int_{0}^{1} x \, dx &= \lim_{n \to \infty} \sum_{k=1}^{n} f(x_k) \frac{b-a}{n} = \lim_{n \to \infty} \sum_{k=1}^{n} \left(0 + \frac{k}{n}\right) \frac{1-0}{n} \\
+    &= \lim_{n \to \infty} \sum_{k=1}^{n} \frac{k}{n} \cdot \frac{1-0}{n} = \lim_{n \to \infty} \frac{1}{n^2} \sum_{k=1}^{n} k \\
+    &= \lim_{n \to \infty} \frac{1}{n^2} \cdot \frac{n(n+1)}{2} = \lim_{n \to \infty} \frac{n+1}{2n} = \frac{1}{2}. \\
+  \end{align*}
+  \begin{align*}
+  \int_{-1}^{0} x \, dx &= \lim_{n \to \infty} \sum_{k=1}^{n} f(x_k) \frac{b-a}{n} = \lim_{n \to \infty} \sum_{k=1}^{n} \left(-1 + \frac{k}{n}\right) \frac{0-(-1)}{n} \\
+    &= \lim_{n \to \infty} \sum_{k=1}^{n} \left(\frac{-n + k}{n}\right) \cdot \frac{1}{n} = \lim_{n \to \infty} -\frac{1}{n^2} \sum_{k=1}^{n} (n - k) \\
+    &= \lim_{n \to \infty}  \left( -\frac{1}{n^2} \cdot \frac{n(n-1)}{2} \right) = \lim_{n \to \infty} -\frac{n-1}{2n} = -\frac{1}{2}. \\
+  \end{align*}
+\end{primer}
+
+\begin{stav}
+  Neka su \( c_k \in [x_{k-1}, x_k] \) proizvoljne tačke za \( 1 \leq k \leq n \). Tada važi:
+  \[
+    \int_{a}^{b} f(x) \, dx = \lim_{n \to \infty} \sum_{k=1}^{n} f(c_k) \frac{b - a}{n}.
+  \]
+\end{stav}
+
+\newpage
+Važe i sledeća svojstva:
+\begin{itemize}
+  \item \( \int_{a}^{a} f(x) \, dx = 0 \),
+  \begin{center}
+\begin{tikzpicture}[scale=1.2]
+    
+    \draw[->] (-0.3,0) -- (3.5,0) node[right] {$x$};
+    \draw[->] (0,-0.3) -- (0,3.5) node[above] {$y$};
+
+    
+    \draw[thick,blue,domain=0.5:3.0,samples=100] 
+        plot (\x,{0.5 + 0.5*(\x-1)^2});
+
+
+    \draw[dashed] (2,0) -- (2,{0.5 + 0.5*(2-1)^2});
+    \draw[dashed] (2,0) -- (2,{0.5 + 0.5*(2-1)^2});
+
+    \node[below] at (2,0) {$a=b$};
+
+\end{tikzpicture} \\
+Površina je nula jer je to linija, a samim tim nema površinu.
+\end{center}
+  \item \( \int_{b}^{a} f(x) \, dx = - \int_{a}^{b} f(x) \, dx \), \quad Za \( a < b\),
+  \item \( \int_{a}^{c} f(x) \, dx = \int_{a}^{b} f(x) \, dx + \int_{b}^{c} f(x) \, dx \), \quad Za \( a < b < c\),
+\end{itemize}
+
+
+\begin{primer}
+  \begin{align*}
+    \int_{-1}^{1} |x| \, dx 
+    &= \int_{-1}^{0} |x| \, dx + \int_{0}^{1} |x| \, dx \\
+    &= \int_{-1}^{0} -x \, dx + \int_{0}^{1} x \, dx \\
+    &= \lim_{n \to \infty} \sum_{k=1}^{n} f(x_k) \frac{b-a}{n}
+     + \lim_{n \to \infty} \sum_{k=1}^{n} f(x_k) \frac{b-a}{n} \\
+    &= \lim_{n \to \infty} \sum_{k=1}^{n} \left(-1 \cdot \left(-1 + \frac{k}{n}\right)\right) \cdot \frac{0-(-1)}{n}
+    + \lim_{n \to \infty} \sum_{k=1}^{n} \left(0 + \frac{k}{n}\right) \cdot \frac{1-0}{n} \\
+    &= \lim_{n \to \infty} \sum_{k=1}^{n} \left(\frac{n - k}{n}\right) \cdot \frac{1}{n}
+    + \lim_{n \to \infty} \sum_{k=1}^{n} \left(\frac{k}{n}\right) \cdot \frac{1}{n} \\[4pt]
+    &= \lim_{n \to \infty} \left(\frac{1}{n^2}\cdot \left(0+1+\ldots+(n-1)\right)\right)
+    + \lim_{n \to \infty} \sum_{k=1}^{n} \frac{k}{n^2} \\[4pt]
+    &= \lim_{n \to \infty} \left(\frac{1}{n^2} \cdot \frac{n(n-1)}{2} \right)
+    + \lim_{n \to \infty} \left(\frac{1}{n^2}\cdot (1+2+\ldots+n)\right) \\
+    &= \lim_{n \to \infty} \left(\frac{n(n-1)}{2n^2}\right)
+    + \lim_{n \to \infty} \left(\frac{1}{n^2}\cdot \frac{n(n+1)}{2}\right) \\
+    &= \lim_{n \to \infty} \left(\frac{n-1}{2n}\right)
+    + \lim_{n \to \infty} \left(\frac{n+1}{2n}\right) \\
+    &= \frac{1}{2} + \frac{1}{2} \\
+    &= 1.
+  \end{align*}
+\end{primer}
+
+\begin{stav}
+\textbf{(Linearnost određenog integrala)} Neka su \( f,g:[a,b] \to \mathbb{R} \) neprekidne funkcije i neka su \( \lambda_1, \lambda_2 \in \mathbb{R} \) proizvoljne konstante. Tada je \( \lambda_1 f(x) + \lambda_2 g(x) \) neprekidna funkcija na intervalu \([a,b]\) i važi:
+\[
+  \int_{a}^{b} (\lambda_1 f(x) + \lambda_2 g(x)) \, dx = \lambda_1 \int_{a}^{b} f(x) \, dx + \lambda_2 \int_{a}^{b} g(x) \, dx.
+\]
+
+\end{stav}
+\begin{dokaz}
+    \par\hangindent=3.5em
+    \begin{align*}
+      \int_{a}^{b} (\lambda_1 f(x) + \lambda_2 g(x)) \, dx 
+      &= \lim_{n \to \infty} \sum_{k=1}^{n} (\lambda_1 f(x_k) + \lambda_2 g(x_k)) \frac{b-a}{n} \\
+      &= \lim_{n \to \infty} \left( \lambda_1 \sum_{k=1}^{n} f(x_k) \frac{b-a}{n} + \lambda_2 \sum_{k=1}^{n} g(x_k) \frac{b-a}{n} \right) \\
+      &= \lambda_1 \lim_{n \to \infty} \sum_{k=1}^{n} f(x_k) \frac{b-a}{n} + \lambda_2 \lim_{n \to \infty} \sum_{k=1}^{n} g(x_k) \frac{b-a}{n} \\
+      &= \lambda_1 \int_{a}^{b} f(x) \, dx + \lambda_2 \int_{a}^{b} g(x) \, dx.
+    \end{align*}
+\end{dokaz}
+Prelaskom na limes sa sumom vidimo kako konstante mogu da se izvuku ispred sume, a zatim i ispred limesa što daje traženo.
+
+\begin{tvrdjenje}
+  \begin{enumerate}
+    \item Neka je \( h:[a,b] \to \mathbb{R} \) neprekidna funkcija takva da je \( h(x) \geq 0 \) za svako \( x \in [a,b] \). Tada je \( \int_{a}^{b} h(x) \, dx \geq 0 \).
+    \item Neka su \( f,g:[a,b] \to \mathbb{R} \) neprekidne funkcije takve da je \( f(x) \leq g(x) \) za svako \( x \in [a,b] \). Tada je \( \int_{a}^{b} f(x) \, dx \leq \int_{a}^{b} g(x) \, dx \).
+  \end{enumerate}
+\end{tvrdjenje}
+
+\begin{dokaz} \quad
+    \par\hangindent=3.5em
+    \( x_k \) - podeone tačke intervala \([a,b]\). 
+
+    \( x_0 = a < x_1 = a + \frac{b-a}{n} < x_2 = a + \frac{2 \cdot (b-a)}{n} < \dots < x_{n-1} = a + \frac{(n-1) \cdot (b - a)}{n} < x_n = b\).
+    \begin{enumerate}
+      \item \[ \int_{a}^{b} h(x) \, dx = \lim_{n \to \infty} \sum_{k=1}^{n} h(x_k) \frac{b-a}{n} \geq 0, \]
+      jer je \( h(x_k) \geq 0 \) za svako \( k = 1, 2, \ldots, n \) i \( \frac{b-a}{n} \geq 0 \).
+      \item Posmatramo funkciju \( H:[a,b] \to \mathbb{R} \) definisanu kao \( H(x) = g(x) - f(x) \). Očigledno je da je \( H \) neprekidna funkcija na intervalu \([a,b]\) kao razlika takvih funkcija. 
+      \[ g(x) \geq f(x) \implies H(x) = g(x) - f(x) \geq 0, \quad \forall x \in [a,b]. \]
+      Prema prethodnom delu tvrdjenja, važi:
+      \[ \int_{a}^{b} H(x) \, dx \geq 0 = \int_{a}^{b} (g(x) - f(x)) \, dx. \]
+      Iz linearosti određenog integrala sledi:
+      \[
+        \int_{a}^{b} g(x) \, dx - \int_{a}^{b} f(x) \, dx \geq 0,
+      \]
+      što je ekvivalentno traženom:
+      \[
+        \int_{a}^{b} f(x) \, dx \leq \int_{a}^{b} g(x) \, dx.
+      \]
+
+    \end{enumerate}
+\end{dokaz}
+
+\begin{tvrdjenje} \textbf{(Osnovna integralna nejednakost)}
+  Neka je \( f:[a,b] \to \mathbb{R} \) neprekidna funkcija. Tada važi:
+  \[
+    \left| \int_{a}^{b} f(x) \, dx \right| \leq \int_{a}^{b} |f(x)| \, dx.
+  \]
+\end{tvrdjenje}
+\begin{dokaz} \quad
+    \par\hangindent=3.5em
+    \( -|f(x)| \leq f(x) \leq |f(x)| \), za svako \( x \in [a,b] \).
+    \[
+      f \text{ neprekidna} \implies |f|  \text{ neprekidna na } [a,b].
+    \]
+    Prema tvrdjenju iznad, važi:
+    \[
+      \int_{a}^{b} (-|f(x)|) \, dx \leq \int_{a}^{b} f(x) \, dx \leq \int_{a}^{b} |f(x)| \, dx.
+    \]
+    Iz linearosti određenog integrala sledi:
+    \[
+      -\int_{a}^{b} |f(x)| \, dx \leq \int_{a}^{b} f(x) \, dx \leq \int_{a}^{b} |f(x)| \, dx.
+    \]
+    Što je ekvivalentno traženom:
+    \[
+      \left| \int_{a}^{b} f(x) \, dx \right| \leq \int_{a}^{b} |f(x)| \, dx.
+    \]
+    \end{dokaz}
+
+\begin{stav}
+      \( f:[a,b] \to \mathbb{R} \) neprekidna funkcija pri čemu je \( a < b \) i \( f(x) \geq 0 \) za svako \( x \in [a,b] \). Ako je \( \int_{a}^{b} f(x) \, dx = 0 \), tada je \( f(x) = 0 \) za svako \( x \in [a,b] \).
+\end{stav}
+
+\begin{dokaz} \quad
+    \par\hangindent=3.5em
+    Pretpostavimo suprotno, tj. da postoji tačka \( x_0 \in [a,b] \) takva da je \( f(x_0) > 0 \). Kako je \( f \) neprekidna u tački \( x_0 \), postoji \( \delta > 0 \) takvo da je za svako \( x \in (x_0 - \delta, x_0 + \delta) f(x) > \frac{c}{2} \) \\
+    Tada je:
+    \[
+      \begin{aligned}
+      \int_{a}^{b} f(x)\,dx
+      &= \int_{a}^{x_0-\delta} f(x)\,dx
+      + \int_{x_0-\delta}^{x_0+\delta} f(x)\,dx
+      + \int_{x_0+\delta}^{b} f(x)\,dx \\[4pt]
+      &\ge \int_{x_0-\delta}^{x_0+\delta} \frac{c}{2}\,dx \\[4pt]
+      &= \frac{c}{2} \int_{x_0-\delta}^{x_0+\delta} 1\,dx \\[4pt]
+      &= \frac{c}{2}\cdot 2\delta \\[4pt]
+      &= c\delta > 0. \quad \text{Što je kontradikcija.}
+      \end{aligned}
+    \]
+
+\end{dokaz}
+\newpage
+\begin{teorema}
+  \textbf{(Prva teorema o srednjoj vrednosti integrala)} Neka su \( f,g:[a,b] \to \mathbb{R} \) neprekidne funkcije pri čemu je \( g(x) \geq 0 \) za svako \( x \in [a,b] \). 
+  Tada postoji tačka \( c \in [a,b] \) takva da je \( \int_{a}^{b} f(x) g(x) \, dx = f(c) \cdot \int_{a}^{b} g(x) \, dx. \).
+\end{teorema}
+\begin{dokaz} \quad
+    \par\hangindent=3.5em
+    \begin{enumerate}
+      \item \[ \int_{a}^{b} g(x) \, dx = 0 \implies g(x) = 0, \quad \forall x \in [a,b]. \] \\
+      Tada je \[ \int_{a}^{b} f(x) g(x) \, dx = f(c) \cdot 0 = 0 = f(c) \cdot \int_{a}^{b} g(x) \, dx \]. Za bilo koju tačku \( c \in [a,b] \) zadovoljava uslov teoreme.
+      \item \[ \int_{a}^{b} g(x) \, dx > 0. \] \\
+      \[
+        \begin{aligned}
+        &f:[a,b]\to\mathbb{R} \text{ neprekidna funkcija} \\
+        &\overset{\text{Vajerštrasova teorema}}{\implies}
+        f \text{ je ograničena na } [a,b]
+        \text{ i dostiže max i min na } [a,b].
+        \end{aligned}
+      \]
+      \[
+        m := \min_{x \in [a,b]} f(x), \quad M := \max_{x \in [a,b]} f(x).
+      \]
+      \[ (\forall x \in [a,b]) \quad m \leq f(x) \leq M. \]
+      Pomnožimo sa \( g(x) \):
+      \[ m \cdot g(x) \leq f(x) \cdot g(x) \leq M \cdot g(x). \]
+      Integrisanjem dobijamo:
+      \[
+        \int_{a}^{b} m g(x) \, dx \leq \int_{a}^{b} f(x) g(x) \, dx \leq M \cdot \int_{a}^{b} g(x) \, dx. 
+      \]
+      \[
+        m \cdot \int_{a}^{b} g(x) \, dx \leq \int_{a}^{b} f(x) g(x) \, dx \leq M \cdot \int_{a}^{b} g(x) \, dx.
+      \]
+      Deljenjem sa \( \int_{a}^{b} g(x) \, dx \):
+      \[
+        m \leq \frac{\int_{a}^{b} f(x) g(x) \, dx}{\int_{a}^{b} g(x) \, dx} \leq M.
+      \]
+      Prema teoremi o međuvrednosti, postoji tačka \( c \in [a,b], f(c) = y \) jer je \( y \) između \( m \) i \( M \). Dakle:
+      \[
+        f(c) = \frac{\int_{a}^{b} f(x) g(x) \, dx}{\int_{a}^{b} g(x) \, dx}.
+      \]
+    \end{enumerate}
+\end{dokaz}
+
+\end{document}
+
+
