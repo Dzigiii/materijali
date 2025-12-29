@@ -18,8 +18,56 @@
 
 %}
 
+%left '+' '-'
+%left '*' '/'
+%right UMINUS
+%union { //za podatke promenljive velicine koristimo pokazivace
+    double v;
+    bool b;
+    std::string* s;
+}
 
+%token PRINT_T EQ NEQ GEQ LEQ
+%token<v> BROJ
+%token<s> ID
 
+%type<v> izraz
+%type<b> logicka_naredba
+
+%start program
 %%
+
+program: naredba program
+    | naredba
+    ;
+
+naredba: ID '=' izraz ';'       {
+                                    promenljive[*$1] = $3;
+                                    delete $1;
+                                }
+    | PRINT_T '(' izraz ')' ';' {
+                                    std::cout << $3 << std::endl;    
+                                }
+    | logicka_naredba ';'       {
+                                    std::cout << ($1 ? "True" : "False") << std::endl;
+                                }
+    ;
+
+izraz: izraz '+' izraz          {$$ = $1 + $3;}
+    | izraz '-' izraz           { $$ = $1 - $3;}
+    | izraz '*' izraz           { $$ = $1 * $3;}
+    | izraz '/' izraz           { $$ = $1 / $3;}
+    | '(' izraz ')'             { $$ = $2;}
+    | '-' izraz %prec UMINUS    { $4 = -$2;}
+    | ID                        {
+                                    auto it = promenljive.find(*$1);
+                                    if (it == promenljive.end()) {
+                                        yyerror("Promenljiva nije definisana\n");
+                                    }
+
+                                    $$ = it->second;
+                                    delete $1;
+                                }
+                                
 
 
