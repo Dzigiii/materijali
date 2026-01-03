@@ -4,17 +4,296 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb}
+\usepackage{titlesec}
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+
+
+\titleformat{\section}[block]
+  {\centering\normalfont\Huge\bfseries}
+  {} 
+  {0pt}
+  {}
+
+
+\titleformat{\subsection}[block]
+  {\centering\normalfont\large\bfseries} 
+  {\thesubsection} 
+  {1em} 
+  {}
 
 \begin{document}
 
+\section{Grupa}
 
-Grupa je uređeni par \((G, \ast)\), gde je \(G\) skup, a \(\ast\) binarna operacija na \(G\), takav da su zadovoljena sledeća svojstva:
-\begin{enumerate}
-    \item (Zatvorenost) Za svaka \(a, b \in G\) važi: \(a \ast b \in G\).
-    \item (Asocijativnost) Za svaka \(a, b, c \in G\) važi: \((a \ast b) \ast c = a \ast (b \ast c)\).
-    \item (Postojanje neutralnog elementa) Postoji element \(e \in G\) takav da za svaki \(a \in G\) važi: \(e \ast a = a \ast e = a\).
-    \item (Postojanje inverznog elementa) Za svaki \(a \in G\) postoji element \(a^{-1} \in G\) takav da važi: \(a \ast a^{-1} = a^{-1} \ast a = e\).
-\end{enumerate}
-    
+\subsection{Algebarske strukture}
 
-\end{document}
+\subsubsection{Algebarska operacija}
+
+\textbf{Definicija} -- Neka je \(A\) neprazan skup i \(n\) prirodan broj.
+\emph{Algebarska operacija} \(f\) dužine \(n\) na skupu \(A\), ili \(n\)-arna
+operacija skupa \(A\) je funkcija \( f : A^n \rightarrow A \).
+
+Ovde \( n \) predstavlja broj „argumenata” operacije, tojest koliko uzimamo elemenata iz skupa \( A \) da bismo dobili element iz skupa \( A \).
+
+Za \(n = 0, 1\) i \(2\) se redom nazivaju: \emph{nularna} \(f:A^0 \rightarrow A\), \emph{unarna} \(f:A^1 \rightarrow A\) i \emph{binarna} \(f:A^2 \rightarrow A\) operacija.
+
+\begin{itemize}
+  \item \textbf{Nularna operacija:}
+    Skup \( A^0 \) je zapravo jednočlan. Svodi se na izbor jednog elementa iz skupa \(A\). To znači da nema nikakav „ulaz” nego samo daje jedan fiksni element iz skupa \(A\).
+
+    \emph{Primer}: Neka je \( A = \{0, 1, 2, 3\} \). Nularna operacija može biti definisana kao \( f() = 2 \). Ova operacija uvek vraća element \( 2 \) iz skupa \( A \).
+
+  \item \textbf{Unarna operacija:}
+  \item \textbf{Binarna operacija:}
+    Najčešće se piše \( (a f b ) \). Mogu da ispunjavaju dodatne uslove kao što su \emph{komutativnost} (\( \text{za sve } x, y \in A \text{ važi } x f y = y f x \)) i \emph{asocijativnost} (\( \text{za sve } x, y, z \in A \text{ važi } (x f y) f z = x f (y f z) \)).
+
+    \emph{Primeri:}
+   \begin{itemize}
+  \item Sabiranje (\( + \)) i množenje (\( \cdot \)) su binarne operacije na skupovima
+  \( \mathbb{N} \), \( \mathbb{Z} \), \( \mathbb{Q} \), \( \mathbb{R} \) i \( \mathbb{C} \).
+  Ove operacije su na navedenim skupovima \emph{asocijativne} i \emph{komutativne}.
+
+  \item Oduzimanje (\( - \)) nije binarna operacija na skupu \( \mathbb{N} \), jer skup
+  \( \mathbb{N} \) nije zatvoren za oduzimanje (na primer, \( 2 - 5 = -3 \notin \mathbb{N} \)).
+  Na skupovima \( \mathbb{Z} \), \( \mathbb{Q} \), \( \mathbb{R} \) i \( \mathbb{C} \)
+  oduzimanje jeste binarna operacija, ali nije ni asocijativno ni komutativno.
+
+  \item Deljenje (\( / \)) nije binarna operacija na skupovima \( \mathbb{Z} \) i
+  \( \mathbb{Q} \), jer deljenje nulom nije definisano, a oba skupa sadrže element \( 0 \).
+  Takođe, deljenje nije binarna operacija ni na skupu \( \mathbb{Z} \setminus \{0\} \),
+  jer skup nije zatvoren za deljenje (na primer, \( 3 / 2 \notin \mathbb{Z} \)).
+  Međutim, deljenje jeste binarna operacija na skupovima
+  \( \mathbb{Q} \setminus \{0\} \), \( \mathbb{R} \setminus \{0\} \) i
+  \( \mathbb{C} \setminus \{0\} \), ali ni na tim skupovima nije ni asocijativno
+  ni komutativno.
+  \item Presek (\(\cap\)) i unija (\(\cup\)) su binarne operacije na partitivnom skupu
+\(\mathcal{P}(X)\) nekog nepraznog skupa \(X\). Presek podskupova nekog skupa \(X\) je i
+    dalje podskup skupa \(X\), kao i unija.
+
+\item Na skupu pozitivnih celih brojeva \(\mathbb{N}\setminus\{0\}\) definišu se
+operacije NZD (najveći zajednički delilac) i NZS (najmanji zajednički sadržalac),
+koje su binarne operacije. Ove operacije se zapisuju funkcijskim, a ne infiksnim zapisom.
+Umesto \(a \text{ NZD } b\) piše se \(\text{NZD}(a,b)\), a umesto \(a \text{ NZS } b\)
+piše se \(\text{NZS}(a,b)\). Oba skupa su asocijativne i komutativne operacije.
+
+\item Neka je \(n \ge 2\) prirodan broj i \(\mathbb{Z}_n = \{0,1,\dots,n-1\}\).
+Na ovom skupu definišu se sabiranje i množenje po modulu \(n\).
+Označimo sa \( p(m, n) \), gde je \( m \) ceo broj i \( n \ge 2 \) prirodan broj, ostatak pri deljenju
+broja \( m \) sa \( n \) definise se kao jedinstveni broj \( r \) za koji važi \( m = qn + r \), gde je \( q \) ceo broj i \( 0 \le r < n \).
+
+Za \(\mathbb{Z}_5\) koji ima elemente \(0, 1, 2, 3, 4\), važi:
+\[
+  3 + 4 \equiv 2 \mod 5
+\]
+\[  3 \cdot 4 \equiv 2 \mod 5 \]
+što znači da je operacija sabiranja i množenja zatvorena na skupu \(\mathbb{Z}_5\).
+
+\item Preslikavanje \(m \mapsto -m\) na skupu \(\mathbb{Z}\) je primer unarne operacije.
+
+\item Preslikavanje koje svakom elementu skupa \(\mathbb{Z}_n\) pridružuje njegov
+suprotni element je primer unarne operacije.
+
+\item Operacija komplementa na \(\mathcal{P}(X)\) je primer unarne operacije.
+
+\item Operacije NZD i NZS mogu se definisati i kao \(n\)-arne operacije na
+\(\mathbb{N}\setminus\{0\}\), za \(n \ge 2\).
+\end{itemize}
+
+
+\end{itemize}
+
+\subsubsection{Algebarska struktura}
+
+\textbf{Definicija} -- \emph{Algebarska struktura} je uređena $(n+1)$-torka
+\[
+\mathbb{A}=(A,f_1,f_2,\dots,f_n),
+\]
+gde je $A$ neprazan skup, koji se naziva \emph{nosač} algebarske strukture $\mathbb{A}$,
+a $f_1,f_2,\dots,f_n$ su algebarske operacije na skupu $A$, poređane tako da važi
+\[
+\#(f_i)\ge \#(f_{i+1}), \qquad i=1,\dots,n-1,
+\]
+odnosno tako da broj argumenata operacije $f_i$ nije manji od broja argumenata
+operacije $f_{i+1}$.
+
+Uvodimo termin \emph{signature} algebarske strukture $\mathbb{A}$, u oznaci \( \sigma (\mathbb{A}) \), i definiše se kao:
+\[\sigma (\mathbb{A}) = (\#(f_1), \#(f_2), \dots, \#(f_n)).\]
+Da bi dve strukture bile jednake, potrebno je da imaju istu signaturu.
+
+Primeri:
+\begin{itemize}
+  \item \(\mathbb{N} = (N, +, \cdot, 0, 1) = (2, 2, 0, 0)\) 
+  \item \(\mathbb{Z} = (Z, +, \cdot, -, 0, 1) = (2, 2, 1, 0, 0)\)
+\end{itemize}
+\subsection{Pojam grupe i osnovna svojstva}
+
+\subsubsection{Grupa}
+
+\textbf{Definicija} -- \emph{Grupa} je algebarska struktura \(\mathbb{G} = (G, \cdot)\), gde je \(G\) neprazan skup, a \(\cdot\) binarna operacija na skupu \(G\), koja zadovoljava sledeće uslove:
+\begin{itemize}
+  \item \textbf{Asocijativnost:} Za sve \(x, y, z \in G\) važi \((x \cdot y) \cdot z = x \cdot (y \cdot z)\).
+  \item \textbf{Postojanje neutralnog elementa:} Postoji element \(e \in G\) takav da za svaki \(x \in G\) važi \(e \cdot x = x \cdot e = x\).
+  \item \textbf{Postojanje inverznog elementa:} Za svaki \(x \in G\) postoji element \(x^{-1} \in G\) takav da važi \(x \cdot x^{-1} = x^{-1} \cdot x = e\), gde je \(e\) neutralni element.
+\end{itemize}
+
+Element \(e\) je jedinstven. Ako bismo pretpostavili da postoji element \( f \) koji 
+zadovoljava isto uslove neutralnog elementa. Tada dobijamo \( e \cdot f = f \) 
+(jer je \( e \) neutralni element) i \( e \cdot f = e \) (jer je \( f \) neutralni element). 
+Iz ovoga sledi \( e = f \). Dakle, neutralni element je jedinstven.
+
+Pokazaćemo da je i inverzni element jedinstven. Neka za element \( x \in G \) imamo njegov inverz \( \bar{x} \) i još jedan inverz \( \tilde{x} \) koji zadovoljava iste uslove.
+Tada važi:
+\[
+  \tilde{x} \cdot (x \cdot \bar{x}) = \tilde{x} \cdot e = \tilde{x}
+\]
+Zbog asocijativnosti možemo napisati:
+\[
+  \tilde{x} \cdot (x \cdot \bar{x}) = (\tilde{x} \cdot x) \cdot \bar{x} = e \cdot \bar{x} = \bar{x}
+\]
+Kako smo dobili da je \( \tilde{x} = \bar{x} \), zaključujemo da je inverzni element jedinstven.
+
+Ukoliko je operacija \(\cdot\) komutativna, tj. za sve \(x, y \in G\) važi \(x \cdot y = y \cdot x\),
+onda se grupa naziva \emph{abelovom grupom}.
+
+
+\begin{itemize}
+  \item Proizvod \( \prod_{i=1}^{n} x_i \), gde je \( x_i \in G \), definišemo kao
+\[
+\prod_{i=1}^{n} x_i :=
+\begin{cases}
+e, & \text{ako je } n = 0, \\[4pt]
+x_1, & \text{ako je } n = 1, \\[4pt]
+\left(\prod_{i=1}^{n-1} x_i\right)\cdot x_n, & \text{ako je } n > 1.
+\end{cases}
+\]
+Kada je \( x_1 = x_2 = \dots = x_n = x \) umesto \( \prod_{i=1}^{n} x_i \), pišemo \( x^n \), a inače \(( x_1 \cdot x_2 \cdot \dots \cdot x_n )\).
+
+\item Za svako \( n\geq 2\) i svako \( r\), \( 1 \leq r \leq n \), važi:
+\[
+x_1 \cdot x_2 \cdot \dots \cdot x_n = (x_1 \cdot x_2 \cdot \dots \cdot x_r) \cdot (x_{r+1} \cdot x_{r+2} \cdot \dots \cdot x_n).
+\]
+Ovo sledi iz asocijativnosti operacije \(\cdot\), tj. iz činjenice da se zagrade mogu postaviti na bilo koje mesto bez promene vrednosti izraza.
+Dokazujemo indukcijom po \( n \).
+\begin{itemize}
+  \item Baza: Za \( n = 2 \) imamo:
+  \[
+    (x_1) \cdot (x_2) = (x_1 \cdot x_2)
+    \]
+  što je očigledno tačno.
+  \item Indukcioni korak: Pretpostavimo da je \( n > 2 \) i da smo tvrđenje dokazali za sve prirodne brojeve manje od \( n \).
+  \item Pokažimo da važi i za \( n \). Ukoliko je \( r = n - 1 \)
+  \[
+    (x_1 \cdot x_2 \cdot \dots \cdot x_r) \cdot (x_{r+1} \cdot x_{r+2} \cdot \dots \cdot x_n) = (x_1 \cdot x_2 \cdot \dots \cdot x_{n}),
+  \]
+  što je očigledno tačno.
+  Ukoliko je \( r < n - 1 \), tojest \( r + 1 \le n - 1 \), sledi:
+  \[
+    (x_{r+1} \dots x_n) = (x_{r+1} \dots x_{n-1}) \cdot x_n.
+  \]
+  i
+  \[
+    (x_1 \dots x_r) \cdot (x_{r+1} \dots x_n) = (x_1 \dots x_r) \cdot ((x_{r+1} \dots x_{n-1}) \cdot x_n).
+  \]
+  Zbog asocijativnosti operacije \(\cdot\) imamo:
+  \[
+    ((x_1 \dots x_r) \cdot (x_{r+1} \dots x_{n-1})) \cdot x_n.
+  \]
+  Prema indukcionoj pretpostavci, važi:
+  \[
+    (x_1 \dots x_r) \cdot (x_{r+1} \dots x_{n-1}) = x_1 \cdot x_2 \cdot \dots \cdot x_{n-1}.
+  \]
+  Dakle, dobijamo:
+  \[
+    (x_1 \cdot x_2 \cdot \dots \cdot x_{n-1}) \cdot x_n = (x_1 \cdot x_2 \cdot \dots \cdot x_n).
+  \]
+  Time je dokaz završen. 
+
+  Ako bi svi \( x_i \) bili jednaki nekom elementu \( x \in G \), onda bi za sve 
+  \( m, n \in \mathbb{N} \) važilo \(x^m x^n = x^{m+n}\).
+\end{itemize}
+\item U opštem slučaju se redosled članova proizvoda ne može menjati, osim ako je grupa abelova.
+Random dokaz koji smara
+\item za sve \( x \in G \):
+  \[ (x^{-1})^{-1} = x \]
+  Ovaj rezultat sledi iz jedinstvenosti inverza:
+  \[
+    \begin{aligned}
+      x \cdot x^{-1} &= e = x^{-1} \cdot x
+      \hfill
+      (x^{-1})^{-1} \cdot x^{-1} = e = x^{-1} \cdot (x^{-1})^{-1},
+    \end{aligned}
+  \]
+pa su stoga jednaki.
+\item Za sve \( x, y \in G \):
+
+\[
+    (xy)^{-1} = y^{-1} x^{-1}.
+\]
+Ovo se proverava tako što ćemo da dobijemo neutralni element:
+\[
+  (y^{-1}x^{-1})(xy) = y^{-1}(x^{-1}x)y = y^{-1} e y = y^{-1} y = e,
+\]
+\[
+  (xy)(y^{-1}x^{-1}) = x(yy^{-1})x^{-1} = x e x^{-1} = x x^{-1} = e.
+\]
+Dakle, \( (xy)^{-1} = y^{-1} x^{-1} \).
+
+\item Za sve \( x_1, x_2, \dots, x_n \in G \):
+\[
+  (x_1 x_2 \dots x_n)^{-1} = x_n^{-1} x_{n-1}^{-1} \dots x_1^{-1}.
+\]
+
+\item Svaka jednačina oblika
+\[
+ax = b \tag{1}
+\]
+ima tačno jedno rešenje u grupi \(G\). Isto važi i za jednačinu oblika
+\[
+xa = b.
+\]
+
+Nije teško proveriti da je \(x = a^{-1}b\) jedno rešenje jednačine \((1)\), jer važi
+\[
+a(a^{-1}b) = (aa^{-1})b = eb = b.
+\]
+
+Rešenje je jedinstveno, jer iz \(ax_1 = ax_2\) sledi
+\[
+a^{-1}ax_1 = a^{-1}ax_2,
+\]
+odnosno
+\[
+ex_1 = ex_2,
+\]
+pa mora biti \(x_1 = x_2\).
+\item Za sve \( a, x \in G \) i \( n \geq 1 \) važi:
+\[
+  (a x a^{-1})^n = a x^n a^{-1}.
+\]
+Ovo se dokazuje indukcijom po \( n \):
+\begin{itemize}
+  \item Baza: Za \( n = 1 \) imamo:
+  \[
+    (a x a^{-1})^1 = a x a^{-1},
+  \]
+  što je očigledno tačno.
+  \item Indukcioni korak: Pretpostavimo da je \( n > 1 \) i da smo tvrdnju dokazali za  \( n \).
+  Pokažimo da važi i za \( n +1 \):
+  \[
+    (a x a^{-1})^{n+1} = \underbrace{(a x a^{-1})^n \cdot (a x a^{-1}) = ax^na^{-1}axa^{-1}}_{\text{induktivna hipoteza}} = ax^nxa^{-1} = ax^{n+1} a^{-1}.
+  \]
+  \end{itemize}
+\end{itemize}
+\bigskip
+\textbf{Stav:} Neka je \( G \) grupa, \( x \in G \) i \( m, N \in \mathbb{Z} \). Tada važi:
+  \begin{itemize}
+  \item \( x^{-n} = (x^n)^{-1} \)
+  \item \( x^m x^n = x^{m+n} \)
+  \item \( (x^m)^n = x^{mn} \)
+  \end{itemize}
+
+\subsection{Podgrupe}
+
+\textbf{Definicija} -- Ako su \(\mathbb{G} = (G, \cdot)\) grupa i \((H, * ) \) dve grupe, onda je grupa \( (H, * ) \) podgrupa grupe \( (G, \cdot) \) ukoliko je:
