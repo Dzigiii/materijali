@@ -294,7 +294,119 @@ Ovo se dokazuje indukcijom po \( n \):
   \item \( (x^m)^n = x^{mn} \)
   \end{itemize}
 
-\subsection{Podgrupe}
+\subsubsection{Podgrupe}
 
-\textbf{Definicija} -- Ako su \(\mathbb{G} = (G, \cdot)\) grupa i \((H, * ) \) dve grupe, onda je grupa \( (H, * ) \) podgrupa grupe \( (G, \cdot) \) ukoliko je:
+\textbf{Definicija} -- Ako su \( (G, \cdot)\) i \((H, * ) \) dve grupe, onda je grupa \( (H, * ) \) podgrupa grupe \( (G, \cdot) \) ukoliko je:
+
+\begin{itemize}
+  \item \( H \subseteq G \)
+  \item Za sve \( x, y \in H \) važi \( x * y = x \cdot y \)
+\end{itemize}
+Ukoliko je \( (H, * ) \) podgrupa grupe \( (G, \cdot) \), pišemo \( H \leq G \).
+\medskip
+
+Za neutral \( e_G \) element grupe \( G \) i neutral \( e_H \) element grupe \( H \) važi \( e_H = e_G \).
+Dokažimo to: 
+
+Neka je \(h \in H \) neki element iz \( H \). Tada važi:
+\[\begin{aligned}
+  h*\varepsilon = h. \\
+  \text{Tada je i: } \\
+  h \cdot \varepsilon = h. \\
+  \text{Pošto je } x \cdot y = x * y \text{ za sve } x, y \in H, \text{ a } h, \varepsilon \in H, \\
+  \text{ Množenjem gornje jedankosti sa } h^{-1} \text{ dobijamo } \\
+  h^{-1} \cdot (h \cdot \varepsilon) &= h^{-1} \cdot h. \\
+  \text{S obzirom da je } h^{-1} \cdot h = e_G, \text{ sledi: } \\
+  (h^{-1} \cdot h) \cdot \varepsilon &= e_G. \\
+  e_G \cdot \varepsilon &= e_G. \\
+  \varepsilon &= e_G. 
+\end{aligned}\]
+
+Isto tako i za \( x^{-1} \) inverz elementa \( x \in G \), a \( x' \) inverz elementa \( x \in H \) važi \( x' = x^{-1} \).
+Dokazaćemo to ovako:
+
+\[
+  x \cdot x^{-1} = x^{-1} \cdot x = e \tag{1}
+\]
+\[
+  x * x' = x' * x = \varepsilon \tag{2}
+\]
+Posto \( x, x' \in H \), i pošto \( \varepsilon = e \), sledi:
+\[
+  x \cdot x' = x' \cdot x = e \tag{3}
+\]
+Iz (1) i (3) na osnovu jedinstvenosti inverza sledi da je \( x' = x^{-1} \).
+
+\bigskip
+\textbf{Stav} -- Neprazan podskup \( H \) grupe \( G \) je podgrupa grupe \( G \) ako i samo ako za sve \( x, y \in H \) važi \( xy^{-1} \in H \).
+
+\bigskip
+\textbf{Stav} -- Ako su \( H \) i \( K \) podgrupe grupe \( G \), onda je i njihov presek \( H \cap K \) podgrupa grupe \( G \),
+dok je \( H \cup K \) podgrupa grupe \( G \) samo ako je \( H \subseteq K \) ili \( K \subseteq H \).
+
+Dokaz:
+
+Kako su $H$ i $K$ podgrupe grupe $G$, moraju sadržati neutralni element, te onda \( H \cap K \neq \emptyset \). 
+Pretpostavićemo da \( x, y \in H \cap K \). To znači da su \( x, y \in H \) i \( x, y \in K \). Na osnovu
+prethodnog stava, \( xy^{-1} \in H \) i \( xy^{-1} \in K \). Dakle, \( xy^{-1} \in H \cap K \).
+Prema tome, \( H \cap K \) je podgrupa grupe \( G \).
+\smallskip
+
+Što se tiče unije, kada je jedna podskup druge, unija je jednaka većoj podgrupi, pa je samim tim i podgrupa.
+
+Neka je \(H \cup K \) podgrupa grupe \( G \) i neka je \( H \not\subseteq K \), dokazaćemo da \( K \subseteq H \).
+Kako \( H \not\subseteq K \), postoji element \( h \in H \) takav da \( h \notin K \). Ako uzmemo proizvoljni
+element \( k \in K \), dokazaćemo da je \( k \in H \). 
+Posmatrajmo element \( k \cdot h \). Kako su \( k \text{ i } h \in H \cup K \) a \( H \cup K \) je podgrupa grupe \( G \),
+te onda \( k \cdot h \in H \cup K \). A ako \( k \cdot h \in K \), dobijamo da je \( h = k^{-1} \cdot (k \cdot h) \in K \), što je kontradikcija.
+Te onda \( k \cdot h \) mora biti u \( H \). Iz toga sledi da je \( k = (k \cdot h) \cdot h^{-1} = k \in H \). Dakle, \( K \subseteq H \). 
+
+\bigskip
+\subsubsection{Ciklične grupe}
+
+\textbf{Definicija} -- Grupa \( G \) je \emph{ciklična grupa} ukoliko postoji element \( x \in G \) takav da je svaki element grupe \( G \) oblika \( x^m \), za neki ceo broj \( m \), odnosno:
+\[G = \{ x^m \mid m \in \mathbb{Z} \}.\]
+Element \( x \) se naziva \emph{generator} grupe \( G \), a grupa se označava sa \( \langle x \rangle \). 
+Ovo znači da je grupa generisana jednočlanim podskupom, tj. jednim elementom.
+Primeri cikličnih grupa su:
+\begin{itemize}
+  \item Grupa \( (\mathbb{Z}_n, +) \) je ciklična grupa sa generatorom \( 1 \), jer je svaki element skupa \( \mathbb{Z}_n = \{0, 1, 2, \dots, n-1\} \) oblika \( 1 \cdot m \mod n \text{ odnosno } 1 + 1 + 1 + 1 + \dots\), za neki ceo broj \( m \).
+  \item Grupa \( \mathbb{C}_n\) = \{\( z \in \mathbb{C} \mid z^n = 1 \} \) je ciklična grupa.
+  \item Grupa \( (\mathbb{Z}, +) \) je ciklična grupa sa generatorom \( 1 \) .
+\end{itemize}
+
+\subsubsection{Diedarske grupe}
+
+\subsubsection{Red grupe; red elementa}
+
+\textbf{Definicija} -- Ako je grupa \( G \) konačna, ukupan broj elemenata grupe \( G \) se naziva \emph{red grupe} i označava se sa \( |G| \).
+U suprotnom, ako nije konačna, kaže se da je grupa \( G \) \emph{beskonačnog reda}.
+
+Za neki element \( x \) grupe \( G\), ukoliko ne postoji broj \( n \geq 1 \) takav da je \( x^n = e \), kažemo da je element \( x \) \emph{beskonačnog reda}.
+Ako takav broj \( n \) postoji, najmanji takav broj se naziva \emph{red elementa} \( x \) i označava se sa \( \text{ord}(x) \text{ili } \omega(x) \):
+\[ \omega(x) = \min \{ m \geq 1\mid x^m = e \}. \]
+
+\textbf{Stav} -- Red ma kog elementa neke grupe jednak je podgrupe generisane tim elementom.
+
+Dokaz:
+
+Ukoliko je element \( x \) beskonačnog reda, onda je \( x^k \neq x^l \) za sve \(k \neq l \). Ako je \( x^k = x^l \)
+za neke $k$ i $l$ pri čemu je \( k > l \), onda je \( x^{k-l} = e \), a \( k - l \geq 1 \), što protivreči pretpostavci da je $x$ beskonačnog reda.
+Znači, iz  \( x^k \neq x^l \) za \( k \neq l \) sledi da je podgrupa \( \langle x \rangle \) beskonačna. Dakle element beskonačnog reda generiše beskonačnu podgrupu.
+
+Onda nek pretpostavimo da \( \omega(x) = n \geq 1 \), tada tvrdimo da:
+\[
+  \langle x \rangle = \{e, x, x^2, \dots, x^{n-1} \}
+\]
+i da su svi elementi različiti. Svaki element iz \( \langle x \rangle \) je oblika $x^m$ za neki ceo broj $m$. Podelimo sa ostatkom $m$ sa $n$ i dobijamo \( m = qn + r \) gde je \( 0 \leq r < n\).
+Tada je:
+\[
+  x^m = (x^n)^qx^r = e^qx^r = x^r \in \{e, , x^2, \dots, x^{n-1} \}
+\]
+Znaci zaključujemo da je \( \langle x \rangle = \{e, , x^2, \dots, x^{n-1} \} \).
+
+Ostaje još da proverimo da li su svi elementi različiti, odnosno da li ima nekih koji su isti. Ukoliko bi bilo \( x^r = x^s \) za neke \( 0 \leq r < s < n \),
+onda bi važilo za njihovu razliku \( x^{s-r} = a \), a to nije moguće, jer \( 0 < s - r < n \text{, a } n = \omega(x) \).
+Ovime smo zaključili da su svi elementi različiti i da je red podgrupe \( \langle x \rangle \) zaista $n$, a to je i red elementa a.
+
 \end{document}
