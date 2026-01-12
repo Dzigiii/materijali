@@ -7,6 +7,7 @@
 \usepackage{titlesec}
 
 \renewcommand{\thesubsection}{\arabic{subsection}}
+\newcommand{\f}[1]{\(#1\)}
 
 
 
@@ -386,7 +387,8 @@ Za neki element \( x \) grupe \( G\), ukoliko ne postoji broj \( n \geq 1 \) tak
 Ako takav broj \( n \) postoji, najmanji takav broj se naziva \emph{red elementa} \( x \) i označava se sa \( \text{ord}(x) \text{ili } \omega(x) \):
 \[ \omega(x) = \min \{ m \geq 1\mid x^m = e \}. \]
 
-\textbf{Stav} -- Red ma kog elementa neke grupe jednak je podgrupe generisane tim elementom.
+\medskip
+\textbf{Stav} -- Red ma kog elementa neke grupe jednak je redu podgrupe generisane tim elementom.
 
 Dokaz:
 
@@ -406,7 +408,631 @@ Tada je:
 Znaci zaključujemo da je \( \langle x \rangle = \{e, , x^2, \dots, x^{n-1} \} \).
 
 Ostaje još da proverimo da li su svi elementi različiti, odnosno da li ima nekih koji su isti. Ukoliko bi bilo \( x^r = x^s \) za neke \( 0 \leq r < s < n \),
-onda bi važilo za njihovu razliku \( x^{s-r} = a \), a to nije moguće, jer \( 0 < s - r < n \text{, a } n = \omega(x) \).
+onda bi važilo za njihovu razliku \( x^{s-r} = e \), a to nije moguće, jer \( 0 < s - r < n \text{, a } n = \omega(x) \).
 Ovime smo zaključili da su svi elementi različiti i da je red podgrupe \( \langle x \rangle \) zaista $n$, a to je i red elementa a.
+
+\medskip
+\textbf{Stav} -- Ako je element \( a \) beskonačnog reda i \( m \neq 0 \), onda je i \( a^{m} \) beskonačnog reda. 
+Ukoliko je \( \omega(a) = n \) i \( m \neq 0 \) onda je 
+\[ 
+  \omega(a^m) = \frac{n}{\text{NZD}(n, m)}.
+\]
+
+Dokaz:
+ 
+Pretpostavljamo da je \( a^m \) konačnog reda, tada po definiciji za \( m \neq 0 \), postoji \( r \geq 1 \) takav da 
+\( (a^m)^r = e \). Odatle sledi da je i \( a^{mr} = e \), pošto znamo da proizvod \(m\cdot r \geq 1\) i da se dobija \( e \), onda po definiciji sledi da je
+\( a \) konačnog reda. Pošto je ovo kontradikcija, sledi da je \( a^m \) beskonačnog reda.
+
+Dokaz drugog dela, neka je \( d = \text{NZD}(m, n) \)
+
+\textbf{Napomena} -- Ako je \( n \) red elementa \( a \), onda za svaki \( l \in \mathbb{Z} \) važi:
+\[
+  a^l = e \text{ ako i samo ako } l \mid n.
+\]
+
+\subsubsection{Izomorfizmi grupa}
+
+\textbf{Definicija} -- Neka su $(G, \cdot)$ i $(H, *)$ grupe. Kažemo da su ove grupe \emph{izomorfne} ako postoji bijekcija \( f : G \rightarrow H \) takva da je za sve \( x, y \in G \) važi:
+\[
+  f(x \cdot y) = f(x) * f(y).
+\]
+Kada je grupa \( G \) izomorfna grupi \( H \), pišemo \( G \cong H \). Funkcija \( f \) se naziva \emph{izomorfizam} grupa \( G \) i \( H \).
+
+\textbf{Stav} -- Ako je \f{e} neutral u \f{G}, \f{\varepsilon} neutral u \f{H} i
+\f{f:G \to H} izomorfizam, onda je \f{f(e)=\varepsilon}.
+Osim toga, \f{f(x^{-1}) = f(x)^{-1}}.
+
+Dokaz:
+
+Možemo napisati
+\[
+f(e) = f(e \cdot e) = f(e) * f(e),
+\]
+što je direktna posledica definicije izomorfizma.
+Množenjem obe strane \emph{sa desne strane} sa \f{f(e)^{-1}} dobijamo:
+\[
+f(e) * f(e)^{-1} = (f(e) * f(e)) * f(e)^{-1}.
+\]
+Leva strana je jednaka \f{\varepsilon}, dok se desne strane,
+po asocijativnosti, svodi na:
+\[
+f(e) * (f(e) * f(e)^{-1}) = f(e) * \varepsilon = f(e).
+\]
+Otuda sledi da je \f{\varepsilon = f(e)}.
+Dalje, iz jednakosti \f{\varepsilon = f(e)} sledi:
+\[ 
+f(e) = f(x \cdot x^{-1}) = f(x) * f(x^{-1}).
+\]
+Množenjem obe strane \emph{sa leve strane} sa \f{f(x)^{-1}} dobijamo:
+\[
+f(x)^{-1} * f(e) = f(x)^{-1} * (f(x) * f(x^{-1})).
+\]
+Leva strana je jednaka \f{f(x)^{-1}}, dok se desne strane, po asocijativnosti, svodi na:
+\[
+(f(x)^{-1} * f(x)) * f(x^{-1}) = \varepsilon * f(x^{-1}) = f(x^{-1}).
+\]
+Otuda sledi da je \f{f(x^{-1}) = f(x)^{-1}}.
+
+\textbf{Stav} -- Ako je \f{f:G \rightarrow H} izomorfizam grupa, onda je i \f{f^{-1}:H \rightarrow G} izomorfizam grupa.
+
+Dokaz:
+
+Jasno je da takav inverz \f{f^{-1}} postoji, jer je \f{f} bijekcija. Treba pokazati da je \f{f^{-1}(u*v) = f^{-1}(u) \cdot f^{-1}(v)} za sve \f{u, v \in H}.
+Kako je \f{f} \emph{"na"}, onda postoje \f{x} i \f{y} u \f{G} tako da je \f{f(x) = u} i \f{f(y) = v}. Tada je:
+\[
+f^{-1}(u*v) = f^{-1}(f(x) * f(y)) = f^{-1}(f(x \cdot y)) = x \cdot y = f^{-1}(u) \cdot f^{-1}(v).
+\]
+
+
+Izomorfizam čuva red elemenata u grupi.
+
+
+\textbf{Stav} -- Neka je \f{f: G \rightarrow H} izomorfizam grupa i \f{x \in G}:
+  \begin{enumerate}
+  \item Ako je \f{x} beskonačnog reda, onda je i \f{f(x)} beskonačnog reda.
+  
+  Dokaz:
+
+  Razmotrimo kada je \f{x} beskonačnog reda, tojest pokažimo da je \f{f(x)} beskonačnog reda.
+  Pretpostavimo da je \f{f(x)} konačnog reda, ako bismo množili ovako 
+  \[ 
+  \underbrace{f(x)*f(x)*\dots*f(x)}_{n \text{ puta }} = (f(x))^n = \varepsilon
+  \] za neki \f{n > 0}. Svojstvo homomorizma nam daje 
+  \[
+  (f(x))^n = f(\underbrace{x \cdot x \cdots \cdot x}_{n \text{ puta }}) = f(x^n) = f(e) = \varepsilon.
+  \]
+  Znači \f{f(x^n)=f(e)}, a kako je f "1-1", zaključujemo da je \f{x^n = e}, što je kontradikcija jer je \f{x} beskonačnog reda, a ispada je jednak sa neutralnim elementom.
+  \item Ako je \f{x} konačnog reda, onda je \f{\omega(f(x)) = \omega(x)}.
+  
+  Dokaz:
+
+  Neka je \f{n = \omega(x)}. Tada je \f{f(x)^n = f(x^n) = f(e) = \varepsilon}, pa je \f{f(x)} konačnog reda $m$ i da
+  \f{m | n}. Onda, \f{x^m = (f^{-1}(f(x)))^m = f^{-1}(f(x)^m) = f^{-1}(\varepsilon) = e}, pa je \f{n | m}.
+  Iz \f{m | n} i \f{n | m} sledi \f{m = n}.
+  \end{enumerate}
+
+
+  \textbf{Stav} -- Svaka ciklična grupa izomorfna je ili grupi \f{\mathbb{Z}} ili grupi \f{\mathbb{Z}_n} za neko \f{n \geq 1}.
+
+  Dokaz:
+  BEZ DOKAZA TOO MUCH
+
+  \subsubsection{Grupe permutacija}
+
+  \textbf{Stav} -- Neka je \f{X} neprazan skup. Posmatrajmo skup \f{S_X} zadat sa:
+  \[
+  S_X = \{ \pi: X \rightarrow X \mid \pi \text{ je bijekcija } \}.
+  \]
+
+  Tada je \f{(S_X, \circ)} grupa, gde je \f{\circ} kompozicija funkcija. Nazivamo je \emph{grupa permutacija} skupa \f{X}.
+
+  Dokaz:
+
+  Kako je kompozicija preslikavanja asocijativna operacija, identičko preslikavanje jeste bijekcija i kako svaka
+  bijekcija ima inverz, koji je takođe bijekcija, sledi da je \f{(S_X, \circ)} grupa.
+
+  \textbf{Stav} -- Ako postoji bijekcija između \f{X} i \f{Y}, onda je \f{S_X \cong S_Y}.
+
+  Dokaz:
+
+  
+
+  \subsubsection{Direktan proizvod grupa}
+
+  \text{Definicija} -- Neka su \f{(G_1, *_1)} i \f{(G_2, *_2)} grupa. Definišemo \emph{direktan proizvod} \f{(P, *)} ovih grupa sa:
+ \begin{itemize}
+  \item \f{P = G_1 \times G_2 \times \dots \times G_n;}
+  \item \f{(g_1,g_2,\dots,g_n) * (g'_1,g'_2,\dots,g'_n) = (g_1 *_1 g'_1, g_2 *_2 g'_2, \dots, g_n *_n g'_n).}
+ \end{itemize}
+ Lako se proverava da je \f{(P, *)} grupa. Asocijativnost je očigledna, neutralni element je \f{(e_1, e_2, \dots, e_n)}, gde je \f{e_i} neutralni element grupe \f{G_i}, a inverzni element od \f{(x_1, x_2, \dots, x_n)} je \f{(x_1^{-1}, x_2^{-1}, \dots, x_n^{-1})}, gde je \f{x_i^{-1}} inverzni element od \f{x_i} u grupi \f{G_i}.
+
+\textbf{Stav} -- Grupa \f{\mathbb{Z}_n \times \mathbb{Z}_m} je ciklična ako i samo ako su \f{m} i \f{n} uzajamno prosti, odnosno \f{\text{NZD}(m, n) = 1}.
+
+Dokaz:
+
+\f{\implies} ....
+
+\textbf{Stav} -- Neka je \f{G} grupa, a \f{H} i \f{K} podgrupe grupe \f{G}, za koje važi:
+\begin{itemize}
+  \item \f{G = H \cdot K};
+  \item za sve \f{x \in H} i sve \f{y \in K} važi \f{xy = yx};
+  \item \f{K \cap H = \{ e \}}.
+\end{itemize}
+Tada je \f{G \cong H \times K}.
+
+
+\subsubsection{Lagranžova i Košijeva teorema}
+Kakva je veza između reda konačne grupe i reda neke njene podgrupe?
+
+\textbf{Definicija} -- Ako je \f{G} grupa i \f{H} podgrupa grupe \f{G}, tojest \f{H \leq G}, a \f{x \in G} skup
+\[
+xH = \{ xh \mid h \in H \},
+\]
+naziva se \emph{levi koset} podgrupe \f{H} u grupi \f{G}. Tako se onda, skup 
+\[
+Hx = \{ hx \mid h \in H \}
+\]
+naziva \emph{desni koset} podgrupe \f{H} u grupi \f{G}.
+
+Kako je $e \in H$, koseti $xH$ i $Hx$ sadrže element $x$. Međutim, u opštem
+slučaju $xH \neq Hx$. Npr. ako je $G = D_3$ i $H = \{e,\sigma\}$, onda je
+\[
+H\rho = \{\rho,\sigma\rho\} \neq \{\rho,\rho\sigma\} = \rho H,
+\]
+pošto je $\rho\sigma = \sigma\rho^2$.
+Skup svih levih koseta podgrupe $H$ u $G$ označavamo sa $G/H$, a svih desnih
+koseta sa $H\backslash G$. Kao što smo videli, levi koset koji sadrži
+element $x$ ne mora biti jednak desnom kosetu koji sadrži taj element,
+pa je u opštem slučaju $G/H \neq H\backslash G$. Ipak, između ovih skupova
+postoji bijekcija zadata sa:
+\[
+xH \mapsto Hx^{-1}.
+\]
+
+
+\textbf{Stav} -- Važi:
+\begin{itemize}
+  \item \f{xH = yH} ako i samo ako \f{x^{-1}y \in H};
+  \item ako je \f{xH \neq yH}, onda je \f{xH \cap yH = \emptyset};
+\end{itemize}
+
+\textbf{Stav} -- Neka je \f{G} grupa i \f{H \neq G}. Tada je \f{G} disjunktna unija različitih levih koseta podgrupe \f{H}.
+
+\textbf{Definicija} -- Ukoliko je skup levih koseta \f{G/H} beskonačan, kažemo da je podgrupa \f{H} beskonačnog 
+indeksa u grupi \f{G}. Ukoliko je taj skup konačan, onda se indeks podgrupe \f{H} u grupi \f{G} definiše kao broj 
+elemenata skupa \f{G/H} i označava se sa \f{[G : H]}, tojest broj različitih levih koseta podgrupe \f{H} 
+u grupi \f{G}.
+
+\textbf{Stav} -- Neka je \f{G} beskonačna ciklična grupa. Tada, za svaki prirodan broj \f{n \geq 1} postoji tačno jedna podgrupa od \f{G} reda \f{n}.
+
+Dokaz:
+
+Lmao
+
+\bigskip
+\textbf{Teorema (Lagranžova)} -- Neka je \f{G} konačna grupa i \f{H \leq G}. Tada je:
+\[
+|G| = |H| \cdot [G : H].
+\]
+Red podgrupe \f{H} deli red grupe \f{G}.
+
+Dokaz:
+
+\medskip
+\textbf{Posledica} -- Red svakog elementa konačne grupe deli red te grupe.
+
+Dokaz:
+
+Neka je \f{G} konačna grupa i \f{x \in G}. Tada je red elementa \f{x} jednak redu podgrupe (broju elemenata koje generiše) \f{\langle x \rangle}.
+Odnosno \[\omega(x) = |\langle x \rangle|.\] Prema Lagranžovoj teoremi, red podgrupe \f{\langle x \rangle} deli red grupe \f{G}, pa iz toga sledi da \f{\omega(x) \text{ deli } |G|}.
+
+\medskip
+\textbf{Posledica} -- Svaka grupa prostog reda je ciklična.
+
+Dokaz:
+
+Neka je \f{|G| = p}, gde je \f{p} prost broj. Ako je \f{x} proizvoljan element iz \f{G} različiti od neutrala,
+odnosno da red takvog elementa nije jednak jedan, tojest \f{\omega(x) \neq 1} i da je \f{\omega(x) | p},
+prema prethodnoj posledici, sledi da je \f{\omega(x) = p}, te zaključujemo da je \f{\langle x \rangle = G}.
+
+\medskip
+\textbf{Posledica} -- Ako je \f{G} konačna grupa i \f{x \in G}, onda je \f{x^{|G|} = e}.
+
+Dokaz:
+
+Kako red elementa deli red grupe, postoji \f{k \in \mathbb{N}} takav da je \f{|G| = k \cdot \omega(x)}. Tada je:
+\[
+x^{|G|} = x^{k \cdot \omega(x)} = (x^{\omega(x)})^k = e^k = e.
+\]
+
+\subsubsection{Ojlerova grupa, funkcija i teorema}
+
+U skupu $\mathbb{Z}_n = \{0, 1, \dots, n-1\}$, gde je $n \ge 2$,
+možemo uvesti operaciju $\cdot_n$ (množenje po modulu $n$).
+Naravno, u odnosu na ovu operaciju $\mathbb{Z}_n$ ne čini grupu.
+Posmatrajmo stoga skup:
+\[
+\Phi(n) := \{\, k \mid 1 \le k < n,\ \text{NZD}(k,n)=1 \,\}.
+\]
+\medskip
+
+\textbf{Stav} -- Za sve $n \geq 2$ $(\Phi(n), \cdot_n)$ je
+komutativna grupa.
+
+\medskip
+\noindent
+Dokaz:
+
+Grupa $(\Phi(n), \cdot_n)$ je \emph{Ojlerova grupa}.
+Red ove grupe je $\varphi(n)$.
+Ova funkcija $\varphi$ zove se \emph{Ojlerova funkcija}.
+
+ \textbf{Teorema (Ojlerova)} -- Ako je \f{n \geq 2} i \f{x} ceo broj, uzajamno prost sa \f{n}, (tj. \f{\text{NZD}(x, n) = 1}), tada važi:
+ \[
+ x^{\varphi(n)} \equiv 1 \mod n.
+  \]
+
+  Dokaz:
+
+Posmatrajmo skup
+\[
+\Phi(n) = \{\, [a]_n \mid \NZD(a,n)=1 \,\},
+\]
+odnosno skup svih ostataka po modulu $n$ koji su uzajamno prosti sa $n$.
+Ovaj skup čini grupu u odnosu na množenje po modulu $n$, a njen red je
+\[
+|\Phi(n)| = \varphi(n).
+\]
+
+Pošto je $\NZD(x,n)=1$, sledi da element $x$ pripada grupi
+$\Phi(n)$. Neutralni element ove grupe je $1$.
+Po ranije dokazanom rezultatu (svaki element konačne grupe na stepen
+jednak redu grupe daje neutralni element, tj \f{x^{|G|}=e}), za svaki element $g$ konačne
+grupe $G$ važi
+\[
+g^{|G|} = e,
+\]
+gde je $e$ neutralni element grupe.
+
+Primenjujući ovu tvrdnju na grupu $(\Phi(n), \cdot_n)$ i element $x$,
+dobijamo
+\[
+x^{\varphi(n)} = 1 \quad \text{u grupi } (\Phi(n), \cdot_n)
+\]
+
+Ova jednakost u grupi znači da važi odgovarajuća kongruencija
+\[
+x^{\varphi(n)} \equiv 1 \pmod n,
+\]
+čime je Ojlerova teorema dokazana.
+
+Primer:
+
+Neka je \( n = 10 \). Tada je \( \Phi(10) = \{ 1, 3, 7, 9 \} \) i \( \varphi(10) = 4 \).
+Za \( x = 3 \), koji je prost sa \( 10 \), važi:
+\[
+3^{\varphi(10)} = 3^4 = 81 \equiv 1 \mod 10.
+\]
+To se takođe i peške može ovako uraditi:
+\[3^1 = 3 \mod 10,\]
+\[3^2 = 3^1 \cdot 3 = 3 \cdot 3 = 9 \mod 10,\]
+\[3^3 = 3^2 \cdot 3 = 9 \cdot 3 = 27 \equiv 7 \mod 10,\]
+\[3^4 = 3^3 \cdot 3 = 7 \cdot 3 = 21 \equiv \underline{1} \mod 10.\]
+
+\textbf{Posledica -- Mala Fermaova teorema} -- Ako je $p$ prost broj, koji ne deli ceo broj $x$, tada važi:
+\[
+  x^{p-1} \equiv 1 \mod p.
+\]
+
+\bigskip
+
+Izračunavanje \f{\varphi(n)} za proizvoljno \f{n \geq 2}, koristimo sledeće osobine:
+\begin{itemize}
+  \item ukoliko su \f{m \text{ i } n} uzajamno prosti, tada je \f{\varphi(mn) = \varphi(m) \cdot \varphi(n)};
+  \item za svaki prost broj \f{p} i \f{m \geq 1} važi:
+  \[
+    \varphi(p^m) = p^m - p^{m-1} = p^m \left( 1 - \frac{1}{p} \right).
+  \]
+\end{itemize}
+\smallskip
+Primer:
+
+Izračunati \f{\varphi(20\cdot35)}.
+\[
+  \varphi(20 \cdot 35)
+\]
+Vidimo da \f{20} i \f{35} nisu uzajamno prosti, pa prvo rastavljamo na proste faktore:
+\[
+  20 \cdot 35 = 2^2 \cdot 5^1 \cdot 5^1 \cdot 7^1 = 2^2 \cdot 5^2 \cdot 7^1.
+\]
+Samo ćemo da pomnožimo \f{4 \cdot 7 = 28} i \f{5 \cdot 5}:
+\[
+  \varphi(28) = \varphi(4) \cdot \varphi(7) = 2 \cdot 6 = 12.
+\]
+\[
+  \varphi(25) = \varphi(5^2) = 5^2 - 5^1 = 25 - 5 = 20.
+\]
+Dakle:
+\[
+  \varphi(20 \cdot 35) = \varphi(2^2) \cdot \varphi(5^2) \cdot \varphi(7^1) = 2 \cdot 20 \cdot 6 = 240.
+\]
+Moglo se rešiti na nekoliko načina.
+
+\textbf{Teorema -- Košijeva} -- Ako je \f{G} konačna grupa i \f{p} prost broji takav da
+\f{p \text{ deli } |G|}, tada u \f{G} postoji element reda \f{p}.
+
+
+\subsubsection{Normalne podgrupe}
+\textbf{Definicija} -- Neka je \f{G} grupa i \f{x, y \in G}. Element \f{y} je \emph{konjugovan} 
+elementu \f{x} ako postoji \f{g \in G} takav da je \f{y = g x g^{-1}}.
+
+Ovo je relacija ekvivalencije na \f{G}. 
+Svaki element je konjugovan samom sebi: \f{x = e x e^{-1}}.
+Ako je \f{y} konjugovan \f{x}, tj. ako \f{y = gxg^{-1}}, onda je i \f{x = g^{-1}yg}, pa je \f{x} konjugovan \f{y}.
+Klase ekvivalencije pri ovoj relaciji se nazivaju \emph{Klase konjugacije}.
+
+Za element \f{x} njegovu klasu konjugacije označavamo sa \f{K_x} i važi:
+\[
+  K_x = \{gxg^{-1} \mid g \in G\}.
+\]
+\textbf{Definicija} -- Podgrupa \f{H} grupe \f{G} je \emph{normalna podgrupa} ako je \f{H} unija nekih klasa konjugacije.
+Ako je \f{H} normalna podgrupa grupe \f{G}, pišemo:
+
+\[H \triangleleft G. \]
+
+Važi sledeće:
+\begin{itemize}
+\item za svaku grupu \f{G}: \f{\{e\} \triangleleft G};
+
+Važi \f{K_e = \{geg^{-1} \mid g \in G\} = \{e\}}.
+\item za svaku grupu \f{G}: \f{G \triangleleft G};
+
+G je unija svih klasa konjugacije pa je zato \f{G \triangleleft G}.
+\item za sve \f{n \geq 3}: \f{ \langle \rho \rangle \triangleleft D_n};
+\end{itemize}
+
+\textbf{Stav} -- Neka je \f{H \leq G}. Sledeći uslovi su ekvivalentni:
+\begin{itemize}
+  \item \f{H \triangleleft G};
+  \item za sve \f{g \in G} : \f{gHg^{-1} \subseteq H};
+  \item za sve \f{g \in G} : \f{gH = Hg}.
+\end{itemize}
+
+\textbf{Stav} -- Svaka podgrupa indeksa 2 je normalna.
+
+\medskip
+\textbf{Definicija} -- Neka je \f{G} grupa. Definišemo \emph{centar} grupe \f{G} u oznaci \f{Z(G)} kao skup:
+\[
+  Z(G) = \{ g \in G \mid (\forall x \in G) \, (xg = gx) \}.
+\]
+
+\textbf{Stav} -- Centar grupe \f{Z(G)} je podgrupa grupe \f{G}.
+
+Dokaz:
+
+Kako je $ex = xe$ za sve $x \in G$, to je $e \in Z(G)$.
+Pretpostavimo da $g$ pripada centru.
+To znači da je $gx = xg$ za sve $x \in G$.
+No, tada sledi da je
+\[
+x = g^{-1}xg,
+\]
+pa je i
+\[
+xg^{-1} = g^{-1}x \quad \text{za sve } x \in G,
+\]
+te $g^{-1} \in Z(G)$.
+Konačno, ako su $g,h \in Z(G)$ i $x \in G$, onda je
+\[
+(gh)x = g(hx) = g(xh) = (gx)h = (xg)h = x(gh),
+\]
+pa je $gh \in Z(G)$.
+Dakle, $Z(G)$ je podgrupa grupe $G$.
+
+\medskip
+
+Važi i sledeće:
+\begin{itemize}
+\item za svaku grupu \f{G}: \f{Z(G) \triangleleft G};
+
+Dokažimo da $x \in Z(G)$ ako i samo ako je
+\[
+K_x = \{x\}.
+\]
+Ako $x \in Z(G)$, tada za svako $g \in G$ važi $gx = xg$, pa množenjem sa $g^{-1}$ s desne strane je
+\[
+gxg^{-1} = x.
+\]
+Otuda je
+\[
+K_x = \{gxg^{-1} \mid g \in G\} = \{x\}.
+\]
+Obrnuto, ako je $K_x = \{x\}$, tada za svako $g \in G$ važi
+\[
+gxg^{-1} = x,
+\]
+odnosno $gx = xg$, pa je $x \in Z(G)$.
+Dakle, $Z(G)$ je unija jednočlanih klasa konjugacije, pa je
+\[
+Z(G) \triangleleft G.
+\]
+\item za sve \f{n \geq 3}: \f{\langle \rho \rangle \triangleleft D_n};
+
+Važi $|\langle \rho \rangle| = n$ i $|D_n| = 2n$, pa je
+\[
+[D_n : \langle \rho \rangle] = 2.
+\]
+Pošto je svaka podgrupa indeksa $2$ normalna, sledi
+\[
+\langle \rho \rangle \triangleleft D_n.
+\]
+
+\item za sve \f{n \geq 2}: \f{\mathbb{A}_n \triangleleft \mathbb{S}_n}.
+
+Važi $|A_n| = \frac{n!}{2}$, pa onda imamo
+\[
+[S_n : A_n] = \frac{\frac{n!}{1}}{\frac{n!}{2}} = 2.
+\]
+Otuda, po istom principu,
+\[
+A_n \triangleleft S_n.
+\]
+\end{itemize}
+
+\subsubsection{Količničke grupe}
+U slučaju da su \f{X} i \f{Y} podskupovi od \f{G}, definišemo \f{X \cdot Y} kao skup:
+\[
+  X \cdot Y = \{ x \cdot y \mid x \in X, y \in Y \}.
+\]
+
+\medskip
+\textbf{Stav} -- Skup svih levih koseta normalne podgrupe \f{H} grupe \f{G} čini grupu u odnosu na upravo
+definisano množenje podskupova od G.
+
+\medskip
+\textbf{Definicija} -- Grupa \f{G} je \emph{prosta} ukoliko su njene jedine normalne podgrupe \f{\{e\}} i \f{G}.
+
+\medskip
+\textbf{Definicija} -- Ako su \f{x, y \in G}, definišemo \emph{komutator} elementa \f{x} i \f{y} u oznaci \f{[x, y]} kao:
+\[
+  [x, y] = x^{-1}y^{-1}xy.
+\]  
+
+Primetimo da \f{xy = yx} ako i samo ako je \f{[x, y] = e}. Podgrupu grupe \f{G} generisanu
+komutatorima označavamo sa \f{[G, G]} i nazivamo je \emph{komutatorska podgrupa} od \f{G}.
+
+\bigskip
+\textbf{Stav} -- Važi sledeće:
+\begin{itemize}
+  \item Komutatorska podgrupa grupe \f{G} je normalna podgrupa grupe \f{G}, tj. \f{[G, G] \triangleleft G};
+  \item Ako je \f{h \triangleleft G}, onda je \f{G/H} komutativna ako i samo ako je \f{[G, G] \subseteq H}.
+\end{itemize}
+
+\bigskip
+
+Grupa \f{G/[G, G]} naziva se \emph{Abelizacija} grupe \f{G} i označavamo sa \f{G^{Ab}}.
+
+\smallskip
+\textbf{Stav} -- Ako je \f{G \cong H}, onda je \f{G^{Ab} \cong H^{Ab}}.
+
+\smallskip
+
+Primer: Za sve \f{n \geq 2}: \f{(\mathbb{S}_n)^{Ab} \cong \mathbb{Z}_2}.
+
+Primer: Za sve \f{s \geq 2}:
+\begin{itemize}
+  \item \f{(\mathbb{D}_2s)^{Ab} \cong \mathbb{Z}_2 \times \mathbb{Z}_2};
+  \item \f{(\mathbb{D}_{2s-1})^{Ab} \cong \mathbb{Z}_2}.
+\end{itemize}
+
+\bigskip
+
+\textbf{Stav} -- Ako je \f{p} neparan prost broj, onda je svaka grupa reda \f{2p} ili ciklična ili jeomorfna grupi \f{\mathbb{D}_p}.
+
+\subsubsection{Homomorfizmi grupa}
+
+\textbf{Definicija} --  Neka su \f{(G, \cdot)} i \f{(H, *)} grupe. Preslikavanje \f{f : G \rightarrow H} se naziva \emph{homomorfizam} ako je za sve \f{x, y \in G} važi:
+\[
+  f(x \cdot y) = f(x) * f(y).
+\]
+
+\textbf{Definicija} -- Neka je \f{f : G \rightarrow H} homomorfizam grupa. \emph{Jezgro} homomorfizma \f{f}, u oznaci \f{Ker(f)} definiše se sa:
+\[
+  Ker(f) = \{ g \in G \mid f(g) = e_H \},
+\]
+
+\textbf{Stav} -- Jezgro svakog homomorfizma \f{f:G \rightarrow H} je normalna podgrupa grupe \f{G}, tj. \f{Ker(f) \triangleleft G}.
+
+\textbf{Stav} -- Homomorfizam grupa \f{f:G \rightarrow H} je \emph{"1-1"} ako i samo ako je:
+\[
+  Ker(f) = \{ e_G \}.
+\]
+
+\textbf{Stav} -- Ako je \f{f:G \rightarrow H} homomorfizam grupa, onda je:
+\[
+  Im(f) \leq H.
+\]
+
+\subsubsection{Teoreme o izomorfizmima}
+
+\textbf{Teorema o izomorfizmima grupa} -- Neka je \f{f:G \rightarrow H} homomorfizam grupa. Tada \f{f} indukuje
+izomorfizam \f{\overline{f}: G/Ker(f) \rightarrow Im(f)} definisan sa:
+\[
+  \overline{f}(xKer(f)) = f(x).
+\]
+i važi:
+\[
+  G/Ker(f) \cong Im(f).
+\]
+
+\smallskip
+\textbf{Stav} -- Ako je \f{H} podgrupa grupe \f{G} takva da je \f{[G:H] = p}, pri čemu ne \f{p} najmanji
+prost broj koji deli red grupe \f{G}, tada je \f{H \triangleleft G}.
+
+Primer: Svaka grupa reda 15 je ciklična.
+
+\bigskip
+\textbf{Druga teorema o izomorfizmima grupa} -- Neka je \f{G} grupa, \f{H \leq G} i \f{K \triangleleft G}. Tada je
+\f{HK \leq G}, \f{H \cap K \triangleleft H} i važi:
+\[
+  HK/K \cong H/H \cap K.
+\]
+
+\subsubsection{Dejstva grupa}
+
+\textbf{Definicija} -- Neka je \f{G} grupa i \f{X} neprazan skup. Pod \emph{dejstvom} grupe \f{G} na skupu \f{X}
+podrazumevamo homomorfizam \f{\varphi: G \rightarrow S_X}.
+
+\textbf{Definicija} -- Neka je \f{G} grupa i \f{X} neprazan skup. Pod \emph{dejstvom} grupe \f{G} na skupu \f{X}
+podrazumevamo funckije \f{\Theta: G \times X \rightarrow X} koje zadovoljavaju sledeća dva uslova:
+\begin{itemize}
+  \item \f{\Theta(e, x) = x}, za sve \f{x \in X};
+  \item \f{\Theta(g, \Theta(h, x)) = \Theta(gh, x)}, za sve \f{g, h \in G} i \f{x \in X}.
+\end{itemize}
+
+Skraćeno pišemo \f{g \cdot x} umesto \f{\Theta(g, x)}.
+
+Tada su onda uslovi:
+\begin{itemize}
+  \item \f{e \cdot x = x}, za sve \f{x \in X};
+  \item \f{g \cdot (h \cdot x) = (gh) \cdot x}, za sve \f{g, h \in G} i \f{x \in X}.
+\end{itemize}
+
+\textbf{Definicija} -- Neka grupa \f{G} dejstvuje na nepraznom skupu \f{X}. Za \emph{orbitu} elementa 
+\f{x \in X}, u oznaci \f{\Omega(x)}, definiše se sa:
+\[
+  \Omega(x) = \{ g \cdot x \mid g \in G \}.
+\]
+
+Stabilizator elementa \f{x \in X}, u oznaci \f{\sum_x}, definiše se sa:
+\[
+  \sum_x = \{ g \in G \mid g \cdot x = x \}.
+\]
+
+\textbf{Stav} -- Neka je \f{X} neprazan skup i neka grupa \f{G} dejstvuje na \f{X}. Tada je \f{\sum_x \leq G} za svako \f{x \in X}.
+Osim toga, psotoji bijekcija između \f{G/\sum_x} i \f{\Omega(x)}.
+
+\textbf{Posledica} -- Ukoliko konačna grupa \f{G} dejstvuje na nepraznom skupu \f{X}, onda broj elemenata
+orbite ma kog elementa deli red grupe \f{G}.
+
+\textbf{Stav} -- Neka grupa \f{G} dejstvuje na skupu \f{X}. Ako su elementi \f{x, y \in X} iz iste orbite, onda su njihovi stabilizatori
+\emph{konjugovane} podgrupe, tj. postoji element \f{g \in G} takav da je:
+\[
+  \sum_y = g \sum_x g^{-1}.
+\]
+
+\textbf{Stav} -- Neka \f{G} dejstvuje na \f{X}. Ako su elementi \f{g} i \f{h} konjugovani, onda 
+postoji bijekcija između skupova \f{X^g} i \f{X^h}, gde je
+\[
+  X^g = \{ x \in X \mid g \cdot x = x \} \text{ fiksni skup za g.}
+\] 
+
+\textbf{Teorema} -- Neka konačna grupa \f{G} dejstvuje na nepraznom skupu \f{X}. Tada je broj
+različitih orbita jednak:
+\[
+  \frac{1}{|G|} \sum_{g \in G} |X^g|.
+\]
+
 
 \end{document}
