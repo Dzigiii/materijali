@@ -79,8 +79,13 @@
     boxsep = 3pt
 }
 
-
-
+\newcommand{\gr}[2]{%
+  \mathchoice
+    {\bigg|_{#1}^{#2}}% display style: \[ \]
+    {\big|_{#1}^{#2}}% text style: \( \)
+    {\scriptstyle|_{#1}^{#2}}% script style
+    {\scriptscriptstyle|_{#1}^{#2}}% scriptscript style
+}
 \newcommand{\sekvenca}[6]{%
 \begin{tikzpicture}[scale=1.1]
     % X-axis
@@ -905,14 +910,14 @@ Prelaskom na limes sa sumom vidimo kako konstante mogu da se izvuku ispred sume,
     \par\hangindent=3.5em
     \begin{enumerate}
       \item \[ \int_{a}^{b} g(x) \, dx = 0 \implies g(x) = 0, \quad \forall x \in [a,b]. \] \\
-      Tada je \[ \int_{a}^{b} f(x) g(x) \, dx = f(c) \cdot 0 = 0 = f(c) \cdot \int_{a}^{b} g(x) \, dx \]. Za bilo koju tačku \( c \in [a,b] \) zadovoljava uslov teoreme.
+      Tada je \[ \int_{a}^{b} f(x) g(x) \, dx = f(c) \cdot 0 = 0 = f(c) \cdot \int_{a}^{b} g(x) \, dx. \] Za bilo koju tačku \( c \in [a,b] \) zadovoljava uslov teoreme.
       \item \[ \int_{a}^{b} g(x) \, dx > 0. \] \\
       \[
         \begin{aligned}
-        &f:[a,b]\to\mathbb{R} \text{ neprekidna funkcija} \\
-        &\overset{\text{Vajerštrasova teorema}}{\implies}
-        f \text{ je ograničena na } [a,b]
-        \text{ i dostiže max i min na } [a,b].
+        &f:[a,b]\to\mathbb{R} \text{ neprekidna funkcija}
+        \overset{\text{Vajerštrasova teorema}}{\implies}
+        f \text{ je ograničena na } [a,b] \\
+        &\text{ i dostiže max i min na } [a,b].
         \end{aligned}
       \]
       \[
@@ -939,6 +944,158 @@ Prelaskom na limes sa sumom vidimo kako konstante mogu da se izvuku ispred sume,
     \end{enumerate}
 \end{dokaz}
 
+\begin{definicija}
+  
+  Neka je \( f:[a, b] \to \mathbb{R} \) neprikidna funkcija \textbf{Srednja vrednost funkcije} \(f\)
+  na \([a, b]\), \(a < b\), jendaka je broju  \(\frac{1}{b-a}\int_{a}^{b}f(x)\, dx\).
+
+\end{definicija}
+\begin{align*}
+  \int_{a}^{b} f(x) \,dx = \int_{a}^{b} f(x) \cdot 1 \cdot \,dx &\overset{teorema}{=}
+  f(c) \cdot \int_{a}^{b} 1 \ \cdot \,dx = f(c)(b-a) \\
+  &\implies \frac{1}{b-a} \int_{a}^{b} f(x)\,dx = f(c) \quad \text{za neko } c \in [a, b].
+\end{align*}
+
+\bigskip
+\begin{primer}
+  Veza između određenog i neodređenog integrala:
+
+  Za \(a, b \in \mathbb{R}\)
+  \[
+    \int_{a}^{b} x\, dx = \frac{b^2}{2} - \frac{a^2}{2} = \frac{x^2}{2} \gr{a}{b}
+  \]
+  Znamo da je \(F(x) = \frac{x^2}{2}\) primitivna funkcija od funkcije \(f(x) = x\).
+
+  Cilj: \(\int_{a}^{b} f(x) \,dx = F(x) \gr{a}{b} \) gde je \(F\) bilo koja primitivna funkcija funkcije \(f\).
+\end{primer}
+
+\begin{stav}
+Neka je \(f:[a, b] \to \mathbb{R}\) neprekidna funkcija. Tada je funkcija 
+\(F:[a,b] \to \mathbb{R}\) \(F(x) = \int_{a}^{x} f(t) \,dt\) neprekidna.
+\end{stav}
+\begin{dokaz}
+Neka je \(x_0 \in [a,b]\) proizvoljno.
+
+Hoćemo da pokažemo da je \(F\) neprekidna u \(x_0\), odnosno
+\[
+(\forall \varepsilon > 0)(\exists \delta > 0)(\forall x \in [a,b])\,
+|x-x_0| < \delta \implies |F(x)-F(x_0)| < \varepsilon.
+\]
+
+Neka je \(\varepsilon > 0\) proizvoljno. Tada važi
+\begin{align*}
+F(x)-F(x_0)
+    &= \int_a^x f(t)\,dt - \int_a^{x_0} f(t)\,dt \\
+    &= \int_{x_0}^x f(t)\,dt,
+\end{align*}
+pa je
+\begin{align*}
+|F(x)-F(x_0)|
+    &= \left|\int_{x_0}^x f(t)\,dt\right| \\
+    &\le \int_{x_0}^x |f(t)|\,dt.
+\end{align*}
+
+Pošto je \(f\) neprekidna, ona je i ograničena na \([a,b]\).  
+Neka je \(A>0\) takvo da važi \( |f(t)| \le A \)  \(\forall t \in [a,b]\).
+
+Sada uzmimo
+\[
+\delta = \frac{\varepsilon}{A}.
+\]
+
+Za svako \(x \in (x_0-\delta, x_0+\delta)\) važi
+\begin{align*}
+|F(x)-F(x_0)|
+    &\le \int_{x_0}^x |f(t)|\,dt \\
+    &\le \int_{x_0}^x A\,dt \\
+    &= A \cdot |x-x_0| \\
+    &< A \cdot \delta = \varepsilon.
+\end{align*}
+
+Dakle, \(F\) je neprekidna u \(x_0\).
+\end{dokaz}
+
+\begin{teorema}
+\textbf{(Osnovna teorema integralnog računa)}
+Neka je \(f:[a,b] \to \mathbb{R}\) neprekidna funkcija. Tada je funkcija \(F:[a, b] \to \mathbb{R}\)
+\[
+  F(x) = \int_{a}^{x} f(t) \, dt
+\]
+diferencijabilna i važi \(F'(x) = f(x) \quad \forall x \in (a, b)\).
+\end{teorema} %TODO: komentar sa 18. stranice
+
+\begin{dokaz}
+Hoćemo da pokažemo da važi
+
+\begin{align*}
+  F'(x) &= \lim_{h \to 0} \frac{F(x+h) - F(x)}{h} \quad \forall x \in (a, b) \\
+  F(x+h) - F(x) &= \int_{x}^{x+h} f(t) \,dt \overset{\text{teorema o sr. vrednosti}}{=}
+  f(c) \cdot \int_{x}^{x+h} 1 \cdot \, dt \\
+  &= h \cdot f(c) \quad \text{za neko } c \text{ između } x \text{ i } x+h \\
+  \lim_{h \to 0} \frac{F(x+h) - F(x)}{h} &= \lim_{h \to 0} f(c(h)) = f(x).
+\end{align*}
+\end{dokaz}
+
+\begin{teorema}
+\textbf{(Njutn-Lajbnicova formula)}
+Neka je \(f:[a,b] \to \mathbb{R}\) neprekidna funkcija i neka je \(F:[a, b] \to \mathbb{R}\) bilo koja
+primitivna funkcija funkcije \(f\). Tada važi:
+\[
+  \int_{a}^{b} f(x) \, dx = F(b) - F(a)
+\]  
+\end{teorema}
+
+\begin{dokaz}
+  \[x_0 = a < x_1 = a + \frac{b - a}{n} < x_2 < \dots < x_n = b\]
+  \begin{align*}
+    F(b) - F(a) &= F(x_n) = F(x_0) \\
+    &=F(x_n) - F(x_{n-1}) + F(x_{n-1}) - F(x_{n-2}) + \dots + F(x_2) - F(x_1) + F(x_1) - F(x_0) \\
+    &=\sum_{k=1}^{n}(F(x_k)-F(x_{k-1})) \\
+    &\frac{F(x_k) - F(x_k{-1})}{x_k - x_{k-1}} \overset{\text{Langranžova teorema}}{=} F'(c_k) \quad \text{za neko } c_k \in [x_{k-1}, x_k] \\
+    F(b) - F(a) &= \sum_{k = 1}^{n} (f(c_k) \cdot (x_k - x_{k-1})) = \sum_{k = 1}^{n}(f(c_k) \cdot \frac{b-a}{n})  \qquad \text{kad } n\to+\infty \\
+    F(b) - F(a) &= \int_{a}^{b}f(x) \, dx.
+  \end{align*}
+\end{dokaz}
+
+\begin{tvrdjenje}
+\textbf{(Parcijalna integracija određenog integrala)}
+Neka su date funkcije \(u, v: [a, b] \ to \mathbb{R}\) koje su neprekidno diferencijabilne, tada važi:
+\[
+  \int_{a}^{b} u(x)v'(x) \, dx = u(x)v(x)\gr{a}{b} - \int_{a}^{b}u'(x)v(x) \,dx.
+\]
+\end{tvrdjenje}
+
+\begin{dokaz}
+\begin{align*}
+\int_a^b u(x)v'(x)\,dx + \int_a^b u'(x)v(x)\,dx
+  &= \int_a^b \bigl(u(x)v'(x)+u'(x)v(x)\bigr)\,dx.
+\end{align*}
+
+Neka je
+\[
+f(x)=u(x)v'(x)+u'(x)v(x)
+\quad \text{i} \quad
+F(x)=u(x)v(x).
+\]
+Tada je
+\[
+F'(x)=u(x)v'(x)+u'(x)v(x)=f(x),
+\]
+pa je \(F\) primitivna funkcija funkcije \(f\).
+
+Po Njutn--Lajbnicovoj formuli sledi
+\[
+\int_a^b f(x)\,dx = F(x)\gr{a}{b}.
+\]
+Dakle,
+\[
+\int_a^b \bigl(u(x)v'(x)+u'(x)v(x)\bigr)\,dx = u(x)v(x)\gr{a}{b},
+\]
+odnosno
+\[
+\int_a^b u(x)v'(x)\,dx + \int_a^b u'(x)v(x)\,dx = u(x)v(x)\gr{a}{b}.
+\]
+\end{dokaz}
 
 \end{document}
 

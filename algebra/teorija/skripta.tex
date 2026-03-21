@@ -6,7 +6,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{titlesec}
 
-\renewcommand{\thesubsection}{\arabic{subsection}}
+%\renewcommand{\thesubsection}{\arabic{subsection}}
 \newcommand{\f}[1]{\(#1\)}
 
 
@@ -26,11 +26,10 @@
 
 \begin{document}
 
-\section{Grupa}
+\section{Grupe}
 
-\subsection{Algebarske strukture}
 
-\subsubsection{Algebarska operacija}
+\subsection{Algebarska operacija}
 
 \textbf{Definicija} -- Neka je \(A\) neprazan skup i \(n\) prirodan broj.
 \emph{Algebarska operacija} \(f\) dužine \(n\) na skupu \(A\), ili \(n\)-arna
@@ -105,7 +104,7 @@ suprotni element je primer unarne operacije.
 
 \end{itemize}
 
-\subsubsection{Algebarska struktura}
+\subsection{Algebarska struktura}
 
 \textbf{Definicija} -- \emph{Algebarska struktura} je uređena $(n+1)$-torka
 \[
@@ -128,9 +127,8 @@ Primeri:
   \item \(\mathbb{N} = (N, +, \cdot, 0, 1) = (2, 2, 0, 0)\) 
   \item \(\mathbb{Z} = (Z, +, \cdot, -, 0, 1) = (2, 2, 1, 0, 0)\)
 \end{itemize}
-\subsection{Pojam grupe i osnovna svojstva}
 
-\subsubsection{Grupa}
+\subsection{Grupa}
 
 \textbf{Definicija} -- \emph{Grupa} je algebarska struktura \(\mathbb{G} = (G, \cdot)\), gde je \(G\) neprazan skup, a \(\cdot\) binarna operacija na skupu \(G\), koja zadovoljava sledeće uslove:
 \begin{itemize}
@@ -295,7 +293,7 @@ Ovo se dokazuje indukcijom po \( n \):
   \item \( (x^m)^n = x^{mn} \)
   \end{itemize}
 
-\subsubsection{Podgrupe}
+\subsection{Podgrupe}
 
 \textbf{Definicija} -- Ako su \( (G, \cdot)\) i \((H, * ) \) dve grupe, onda je grupa \( (H, * ) \) podgrupa grupe \( (G, \cdot) \) ukoliko je:
 
@@ -341,6 +339,18 @@ Iz (1) i (3) na osnovu jedinstvenosti inverza sledi da je \( x' = x^{-1} \).
 \bigskip
 \textbf{Stav} -- Neprazan podskup \( H \) grupe \( G \) je podgrupa grupe \( G \) ako i samo ako za sve \( x, y \in H \) važi \( xy^{-1} \in H \).
 
+Dokaz:
+
+Ako su \f{x, y\ \in H}, kako je \f{H} podgrupa, onda i inverz od \f{y} pripada \f{H}, tojest i \f{y^{-1} \in H}.
+Operacija u \f{H} je zapravo restrikcija operacije u \f{G}, pa mora biti \f{xy^{-1} \in H}, pošto \f{x \in H} i 
+\f{y^{-1} \in H}.
+
+Pretpostavimo da je \f{H} neprazan skup i da zadovoljava traženi uslov. Kako je \f{H \neq \emptyset}, te onda postoji
+\f{h \in H}. Tada po pretpostavi i \f{e = hh^{-1} \in H}. Ako je \f{x} proizvoljan u \f{H}, iz pretpostavke i
+činjenice da \f{e \in H}, sledi da i \f{x^{-1} = ex^{-1} \in H}. Konačno, ako su \f{x, y \in H}, onda po već
+dokazano, \f{y^{-1} \in H}, pa je i \f{xy = x(y^{-1})^{-1} \in H}. 
+
+
 \bigskip
 \textbf{Stav} -- Ako su \( H \) i \( K \) podgrupe grupe \( G \), onda je i njihov presek \( H \cap K \) podgrupa grupe \( G \),
 dok je \( H \cup K \) podgrupa grupe \( G \) samo ako je \( H \subseteq K \) ili \( K \subseteq H \).
@@ -363,7 +373,7 @@ te onda \( k \cdot h \in H \cup K \). A ako \( k \cdot h \in K \), dobijamo da j
 Te onda \( k \cdot h \) mora biti u \( H \). Iz toga sledi da je \( k = (k \cdot h) \cdot h^{-1} = k \in H \). Dakle, \( K \subseteq H \). 
 
 \bigskip
-\subsubsection{Ciklične grupe}
+\subsection{Ciklične grupe}
 
 \textbf{Definicija} -- Grupa \( G \) je \emph{ciklična grupa} ukoliko postoji element \( x \in G \) takav da je svaki element grupe \( G \) oblika \( x^m \), za neki ceo broj \( m \), odnosno:
 \[G = \{ x^m \mid m \in \mathbb{Z} \}.\]
@@ -376,9 +386,9 @@ Primeri cikličnih grupa su:
   \item Grupa \( (\mathbb{Z}, +) \) je ciklična grupa sa generatorom \( 1 \) .
 \end{itemize}
 
-\subsubsection{Diedarske grupe}
+\subsection{Diedarske grupe}
 
-\subsubsection{Red grupe; red elementa}
+\subsection{Red grupe; red elementa}
 
 \textbf{Definicija} -- Ako je grupa \( G \) konačna, ukupan broj elemenata grupe \( G \) se naziva \emph{red grupe} i označava se sa \( |G| \).
 U suprotnom, ako nije konačna, kaže se da je grupa \( G \) \emph{beskonačnog reda}.
@@ -428,10 +438,28 @@ Dokaz drugog dela, neka je \( d = \text{NZD}(m, n) \)
 
 \textbf{Napomena} -- Ako je \( n \) red elementa \( a \), onda za svaki \( l \in \mathbb{Z} \) važi:
 \[
-  a^l = e \text{ ako i samo ako } l \mid n.
+  a^l = e \text{ ako i samo ako } n \mid l.
 \]
 
-\subsubsection{Izomorfizmi grupa}
+Kako je ovaj rezultat od posebnog zna\v{c}aja, dajemo i njegov kompletan dokaz.
+
+\begin{itemize}
+\item Pretpostavimo da je $n=\omega(a)$ i da je $a^l=e$. Podelimo $l$ sa $n$.
+Dobijamo da je $l=qn+r$, gde je $0\le r<n$. No, tada je
+\[
+e=a^l=a^{qn+r}=(a^n)^q\cdot a^r=e^q\cdot a^r,
+\]
+te dobijamo da je $a^r=e$. Kako je $0\le r<n=\omega(a)$, to je mogu\'{c}e
+jedino ako je $r=0$. Dakle, $n\mid l$.
+
+\item Neka $n\mid l$. Tada je $l=qn$, za neki ceo broj $q$ i dobijamo
+\[
+a^l=a^{qn}=(a^n)^q=e^q=e.
+\]
+\end{itemize}
+
+
+\subsection{Izomorfizmi grupa}
 
 \textbf{Definicija} -- Neka su $(G, \cdot)$ i $(H, *)$ grupe. Kažemo da su ove grupe \emph{izomorfne} ako postoji bijekcija \( f : G \rightarrow H \) takva da je za sve \( x, y \in G \) važi:
 \[
@@ -518,7 +546,7 @@ Izomorfizam čuva red elemenata u grupi.
   Dokaz:
   BEZ DOKAZA TOO MUCH
 
-  \subsubsection{Grupe permutacija}
+  \subsection{Grupe permutacija}
 
   \textbf{Stav} -- Neka je \f{X} neprazan skup. Posmatrajmo skup \f{S_X} zadat sa:
   \[
@@ -532,13 +560,23 @@ Izomorfizam čuva red elemenata u grupi.
   Kako je kompozicija preslikavanja asocijativna operacija, identičko preslikavanje jeste bijekcija i kako svaka
   bijekcija ima inverz, koji je takođe bijekcija, sledi da je \f{(S_X, \circ)} grupa.
 
+  \medskip
+  Formalniji dokaz:
+
+  \begin{itemize}
+    \item Ako su \f{f, g: X \rightarrow X} bijekcije, tada je i \f{f \circ g: X \rightarrow X} bijekcija. 
+    \item Asocijativnost, \f{ \forall f, g, h \in S_X}, važi \f{(f \circ g) \circ h = f \circ (g \circ h)}.
+    \item Neutralni element je identičko preslikavanje \f{id_X: X \rightarrow X}, gde je \f{id_X(x) = x}, za svaki \f{x \in X}.
+    \item Inverzni element od \f{f \in S_X} je \f{f^{-1}: X \rightarrow X}, gde je \f{f^{-1}(y) = x}, ako je \f{f(x) = y}.
+  \end{itemize} 
+
   \textbf{Stav} -- Ako postoji bijekcija između \f{X} i \f{Y}, onda je \f{S_X \cong S_Y}.
 
   Dokaz:
 
   
 
-  \subsubsection{Direktan proizvod grupa}
+  \subsection{Direktan proizvod grupa}
 
   \text{Definicija} -- Neka su \f{(G_1, *_1)} i \f{(G_2, *_2)} grupa. Definišemo \emph{direktan proizvod} \f{(P, *)} ovih grupa sa:
  \begin{itemize}
@@ -562,7 +600,7 @@ Dokaz:
 Tada je \f{G \cong H \times K}.
 
 
-\subsubsection{Lagranžova i Košijeva teorema}
+\subsection{Lagranžova i Košijeva teorema}
 Kakva je veza između reda konačne grupe i reda neke njene podgrupe?
 
 \textbf{Definicija} -- Ako je \f{G} grupa i \f{H} podgrupa grupe \f{G}, tojest \f{H \leq G}, a \f{x \in G} skup
@@ -597,7 +635,7 @@ xH \mapsto Hx^{-1}.
   \item ako je \f{xH \neq yH}, onda je \f{xH \cap yH = \emptyset};
 \end{itemize}
 
-\textbf{Stav} -- Neka je \f{G} grupa i \f{H \neq G}. Tada je \f{G} disjunktna unija različitih levih koseta podgrupe \f{H}.
+\textbf{Stav} -- Neka je \f{G} grupa i \f{H \leq G}. Tada je \f{G} disjunktna unija različitih levih koseta podgrupe \f{H}.
 
 \textbf{Definicija} -- Ukoliko je skup levih koseta \f{G/H} beskonačan, kažemo da je podgrupa \f{H} beskonačnog 
 indeksa u grupi \f{G}. Ukoliko je taj skup konačan, onda se indeks podgrupe \f{H} u grupi \f{G} definiše kao broj 
@@ -646,7 +684,7 @@ Kako red elementa deli red grupe, postoji \f{k \in \mathbb{N}} takav da je \f{|G
 x^{|G|} = x^{k \cdot \omega(x)} = (x^{\omega(x)})^k = e^k = e.
 \]
 
-\subsubsection{Ojlerova grupa, funkcija i teorema}
+\subsection{Ojlerova grupa, funkcija i teorema}
 
 U skupu $\mathbb{Z}_n = \{0, 1, \dots, n-1\}$, gde je $n \ge 2$,
 možemo uvesti operaciju $\cdot_n$ (množenje po modulu $n$).
@@ -763,7 +801,7 @@ Moglo se rešiti na nekoliko načina.
 \f{p \text{ deli } |G|}, tada u \f{G} postoji element reda \f{p}.
 
 
-\subsubsection{Normalne podgrupe}
+\subsection{Normalne podgrupe}
 \textbf{Definicija} -- Neka je \f{G} grupa i \f{x, y \in G}. Element \f{y} je \emph{konjugovan} 
 elementu \f{x} ako postoji \f{g \in G} takav da je \f{y = g x g^{-1}}.
 
@@ -880,7 +918,7 @@ A_n \triangleleft S_n.
 \]
 \end{itemize}
 
-\subsubsection{Količničke grupe}
+\subsection{Količničke grupe}
 U slučaju da su \f{X} i \f{Y} podskupovi od \f{G}, definišemo \f{X \cdot Y} kao skup:
 \[
   X \cdot Y = \{ x \cdot y \mid x \in X, y \in Y \}.
@@ -930,7 +968,7 @@ Primer: Za sve \f{s \geq 2}:
 
 \textbf{Stav} -- Ako je \f{p} neparan prost broj, onda je svaka grupa reda \f{2p} ili ciklična ili jeomorfna grupi \f{\mathbb{D}_p}.
 
-\subsubsection{Homomorfizmi grupa}
+\subsection{Homomorfizmi grupa}
 
 \textbf{Definicija} --  Neka su \f{(G, \cdot)} i \f{(H, *)} grupe. Preslikavanje \f{f : G \rightarrow H} se naziva \emph{homomorfizam} ako je za sve \f{x, y \in G} važi:
 \[
@@ -954,7 +992,7 @@ Primer: Za sve \f{s \geq 2}:
   Im(f) \leq H.
 \]
 
-\subsubsection{Teoreme o izomorfizmima}
+\subsection{Teoreme o izomorfizmima}
 
 \textbf{Teorema o izomorfizmima grupa} -- Neka je \f{f:G \rightarrow H} homomorfizam grupa. Tada \f{f} indukuje
 izomorfizam \f{\overline{f}: G/Ker(f) \rightarrow Im(f)} definisan sa:
@@ -979,7 +1017,7 @@ Primer: Svaka grupa reda 15 je ciklična.
   HK/K \cong H/H \cap K.
 \]
 
-\subsubsection{Dejstva grupa}
+\subsection{Dejstva grupa}
 
 \textbf{Definicija} -- Neka je \f{G} grupa i \f{X} neprazan skup. Pod \emph{dejstvom} grupe \f{G} na skupu \f{X}
 podrazumevamo homomorfizam \f{\varphi: G \rightarrow S_X}.
@@ -1033,6 +1071,58 @@ različitih orbita jednak:
 \[
   \frac{1}{|G|} \sum_{g \in G} |X^g|.
 \]
+
+
+\section{Konačno generisane Abelove grupe}
+
+\subsection{Suma i direktna suma}
+
+Ovo su grupe u kojima se za dva elementa \f{x} i \f{y} iz Abelove grupe \f{G} važi: \f{xy = yx}.
+Često se za operaciju koristi znak \f{+}, a za neutral element \f{0}. Inverz od \f{a} označavamo sa \f{-a}.
+Umesto \f{x^n} pišemo \f{nx}. Tako \f{x-y} znači \f{x + (-y)}.
+
+\medskip
+Svaka konačno generisana Abelova grupa je izomorfna direktnom proizvodu cikličnih grupa.
+
+Neka je \f{A} Abelova grupa i \f{B, C \leq A} podgrupe Abelove grupe \f{A}. Neka je:
+\[
+  B + C = \{ b + c \mid b \in B, c \in C \}.
+\]
+Tada je \f{B + C \leq A}, zapravo najmanja podgrupa grupe \f{A} koja sadrži kao svoje podgrupe i 
+podgrupu \f{B} i podgrupu \f{C}. Zovemo je \emph{sumom} podgrupa \f{B} i \f{C}.
+
+Opštije, ako su \f{B_1, B_2, \dots, B_n \leq A}, njihovu sumu \f{B_1 + B_2 + \dots + B_n} definišemo sa:
+\[
+  B_1 + B_2 + \dots + B_n = \{ b_1 + b_2 + \dots + b_n \mid b_i \in B_i, i = 1, 2, \dots, n \}.
+\]
+Ova suma je \emph{direktna} ukoliko se svaki element iz te sume na tačno jedan način može predstaviti u navedenom obliku.
+
+\smallskip
+\textbf{Stav} -- Suma podgrupa \f{B_1, B_2, \dots, B_k \leq A} je direktna ako i samo ako važi:
+\[
+  B_{i+1} \cap (B_1 +  \dots + B_i) = \{0\}. \text{ za sve } 1 \leq i \leq k - 1.
+\]
+
+\textbf{Stav} -- Neka su \f{B_1, \dots, B_n} podgrupe Abelove grupe \f{B} i neka je njihova suma direktna.
+Tada je:
+\[
+  B_1 \oplus B_2 \oplus \dots \oplus B_n \cong B_1 \times B_2 \times \dots \times B_n.
+\]
+
+\subsection{Slobodne Abelove grupe}
+
+
+
+
+\subsection{Normalna forma}
+
+\subsection{Generatori i relacije; Matrični metod}
+
+\section{Komutativni prsten sa jedinicom}
+
+\section{Raširenja polja}
+
+
 
 
 \end{document}
