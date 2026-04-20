@@ -1,0 +1,1 @@
+unset surface; set cntrparam levels discrete 0.5,1,1.5,2,2.5; set contour; set table "predavanja_contourtmp0.table"; splot "predavanja_contourtmp0.dat";

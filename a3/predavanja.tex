@@ -1,0 +1,1653 @@
+\documentclass[11pt]{article}
+
+% ========== LANGUAGE AND ENCODING ==========
+\usepackage[utf8]{inputenc}      % Allows UTF-8 input (e.g., ć, č, š)
+\usepackage[T1]{fontenc}         % Correct output of special characters
+\usepackage[serbian]{babel}      % Serbian language (Latin script by default)
+
+% ========== MATH & UTILITIES ==========
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}      % only load xcolor once
+\usepackage{xparse}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{titlesec}
+
+\usepackage{pgf,tikz}
+\usetikzlibrary{shadows}
+\usepackage{tikz-3dplot}
+\usepackage{pgfplots}
+\tdplotsetmaincoords{70}{120}
+\pgfplotsset{compat=1.18} % Ensures modern features are used
+
+\titleformat{\section}[block]
+  {\centering\normalfont\Huge\bfseries}
+  {\thesection.}{1em}{}
+\usepackage{makecell}
+\usepackage{amsthm}
+\usetikzlibrary{math}
+\usepackage{enumitem}
+\usetikzlibrary{arrows}
+
+
+
+\pgfplotsset{compat=1.18}
+
+\newtcolorbox{defbox}{
+    colback = blue!10!white,
+    colframe = blue,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt,
+    enhanced,
+    drop shadow
+}
+
+\newtcolorbox{teoremabox}{
+    colback = red!30!white,
+    colframe = red,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt,
+    enhanced,
+    drop shadow
+}
+
+\newtcolorbox{stavbox}{
+    colback = orange!15!white,
+    colframe = orange,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt,
+    enhanced,
+    drop shadow
+}
+
+\newtcolorbox{lemabox}{
+    colback = yellow!30!white,
+    colframe = yellow,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt,
+    enhanced,
+    drop shadow
+}
+
+\newtcolorbox{tvrbox}{
+    colback = green!10!white,
+    colframe = green,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt,
+    enhanced,
+    drop shadow
+}
+
+\newtcolorbox{primbox}{
+    colback = lime!10!white,
+    colframe = lime!70!black,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt,
+    enhanced,
+    drop shadow
+}
+
+\newtcolorbox{pitbox}{
+    colback = orange!20!white,
+    colframe = brown!70!black,
+    boxrule = 0.5pt,
+    arc = 4pt,
+    boxsep = 3pt,
+    enhanced,
+    drop shadow
+}
+
+\newcommand{\real}{\mathbb{R}}
+
+\newcommand{\gr}[2]{%
+  \mathchoice
+    {\bigg|_{#1}^{#2}}% display style: \[ \]
+    {\big|_{#1}^{#2}}% text style: \( \)
+    {\scriptstyle|_{#1}^{#2}}% script style
+    {\scriptscriptstyle|_{#1}^{#2}}% scriptscript style
+}
+\newcommand{\sekvenca}[6]{%
+\begin{tikzpicture}[scale=1.1]
+    % X-axis
+    \pgfmathparse{#3 + 1} \let\xend\pgfmathresult
+    \draw[->] (0,0) -- (\xend,0) node[right] {#4};
+    % Y-axis
+    \draw[->] (0,0) -- (0,5) node[above] {$a_{#4}$};
+
+    % Y ticks
+    \foreach \y in {0.5,1,1.5,2,2.5,3,3.5,4,4.5} {
+        \draw (-0.1,\y) -- (0.1,\y) node[left=6pt] {\small \y};
+    }
+
+    % Sequence points
+    \foreach \n in {#2,...,#3} {
+        \pgfmathparse{#1}  % expression in \n
+        \let\an\pgfmathresult
+        \filldraw[blue] (\n,\an) circle (2pt);
+    }
+
+    % Lower horizontal line (if provided)
+    \if\relax\detokenize{#5}\relax
+        % nothing
+    \else
+      \draw[dashed, red] (0,#5) -- (\xend,#5) node[right] {\huge ${\text{ograničenje}} = #5$};
+    \fi
+
+    % Upper horizontal line (if provided)
+    \if\relax\detokenize{#6}\relax
+        % nothing
+    \else
+      \ifx#6+infty
+        % do nothing if +infty
+      \else
+        \draw[dashed, red] (0,#6) -- (\xend,#6) node[right] {\huge ${\text{ograničenje}} = #6$};
+      \fi
+    \fi
+\end{tikzpicture}
+}
+
+
+
+
+\newcounter{mathitem} 
+\renewcommand{\themathitem}{\arabic{mathitem}} 
+
+
+\theoremstyle{definition}
+\newtheorem{definicija}{Definicija}[section]
+\newtheorem{primer}[definicija]{Primer}
+\newtheorem{teorema}[definicija]{Teorema}
+\newtheorem{tvrdjenje}[definicija]{Tvrđenje}
+\newtheorem{lema}[definicija]{Lema}
+\newtheorem{stav}[definicija]{Stav}
+
+\makeatletter
+\newtheoremstyle{serbnodot}
+  {3pt}
+  {3pt}
+  {\normalfont}
+  {}
+  {\bfseries}
+  {}
+  {0.5em}
+  {\thmname{#1}}
+\makeatother
+
+\theoremstyle{serbnodot}
+\newtheorem*{dokaz}{Dokaz}
+
+
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+
+\titleformat{\section}[block]
+  {\centering\normalfont\Huge\bfseries}
+  {} 
+  {0pt}
+  {}
+
+
+\titleformat{\subsection}[block]
+  {\centering\normalfont\Large\bfseries} 
+  {\thesubsection} 
+  {1em} 
+  {}
+
+
+\NewDocumentCommand{\naslov}{O{blue!70!black} m}{%
+  \begin{center}
+    \vspace{1em}
+    {\color{#1}\Large\bfseries #2}
+    \vspace{1em}
+    \par
+  \end{center}
+}
+
+\newcommand{\podnaslov}[1]{%
+  \vspace{2em}
+  {\color{black}\Large\bfseries #1}
+  \vspace{0.5em}
+  \par
+}
+
+% Zadatak counter 
+\newcounter{zadatak}[section]
+\renewcommand{\thezadatak}{\arabic{zadatak}}
+
+\newcommand{\pitanje}[1]{%
+    \begin{pitbox}
+    \textbf{Pitanje:} #1
+    \end{pitbox}
+}
+\newcommand{\napomena}[1]{%
+    \textbf{Napomena:} #1
+}
+% Boxed Definicija
+\let\olddefinicija\definicija
+\RenewDocumentEnvironment{definicija}{O{}}
+{
+    \begin{defbox}
+    \olddefinicija[#1]
+}
+{
+    \end{defbox}
+}
+
+% Boxed Primer
+\let\oldprimer\primer
+\RenewDocumentEnvironment{primer}{O{}}
+{
+    \begin{primbox}
+    \oldprimer[#1]
+}
+{
+    \end{primbox}
+}
+
+% Boxed Teorema
+\let\oldteorema\teorema
+\RenewDocumentEnvironment{teorema}{O{}}
+{
+    \begin{teoremabox}
+    \oldteorema[#1]
+}
+{
+    \end{teoremabox}
+}
+
+% Boxed Tvrdjenje
+\let\oldtvrdjenje\tvrdjenje
+\let\endoldtvrdjenje\endtvrdjenje
+
+\RenewDocumentEnvironment{tvrdjenje}{O{}}
+{
+    \begin{tvrbox}
+    \oldtvrdjenje[#1]\par\noindent\ignorespaces
+}
+{
+    \endoldtvrdjenje
+    \end{tvrbox}
+}
+% Boxed Lemma
+\let\oldlema\lema
+\RenewDocumentEnvironment{lema}{O{}}
+{
+    \begin{lemabox}
+    \oldlema[#1]
+}
+{
+    \end{lemabox}
+}
+
+% Boxed stav
+\let\oldstav\stav
+\RenewDocumentEnvironment{stav}{O{}}
+{
+    \begin{stavbox}
+    \oldstav[#1]
+}
+{
+    \end{stavbox}
+}
+
+
+\NewDocumentEnvironment{zadatak}{O{} O{}}
+{%
+  \refstepcounter{zadatak}
+  \begin{tcolorbox}[
+    colback=blue!3,
+    colframe=blue!40!black,
+    sharp corners,
+    boxrule=0.8pt,
+    enhanced,
+    breakable,
+    title={\textbf{Zadatak \thezadatak\IfValueT{#1}{. #1}}},
+    #2
+  ]
+}
+{%
+  \end{tcolorbox}
+}
+
+
+
+\NewDocumentEnvironment{zadatakp}{m O{}}
+{%
+  \refstepcounter{zadatak}
+  \begin{tcolorbox}[
+    colback=blue!3,
+    colframe=blue!40!black,
+    sharp corners,
+    boxrule=0.8pt,
+    enhanced,
+    breakable,
+    title={\textbf{Zadatak \thezadatak. #1}},
+    #2
+  ]
+  \begin{enumerate}[label=\alph*)]
+}
+{%
+  \end{enumerate}
+  \end{tcolorbox}
+}
+
+
+\usepackage[a4paper, margin=2.5cm]{geometry}
+
+
+\begin{document}
+
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+
+    {\Huge \textbf{Analiza 3}}
+
+    \vspace{1cm}
+
+    \rule{\textwidth}{1.2pt}
+
+    \vspace{0.6cm}
+    {\Huge \textbf{Beleške sa predavanja profesorke}}\\[0.3cm]
+    {\Huge \textbf{Aleksandre Marinković}}
+    \vspace{0.6cm}
+
+    \rule{\textwidth}{1.2pt}
+
+    \vfill
+
+    {\large \today}
+
+\end{titlepage}
+
+\newpage
+\tableofcontents 
+\newpage
+
+\section{Funkcije više promenljivih}
+Do sada smo razmatrali nizove realnih brojeva i funkcije jedne promenljive,
+zajedno sa pojmovima kao što su limes, neprekidnost i diferencijabilnost.
+U ovom poglavlju ove pojmove uopštavamo na nizove u \( \mathbb{R}^n \)
+i na funkcije više promenljivih.
+
+\subsection{Prostor \( \mathbb{R}^n \)}
+
+\begin{definicija}
+
+    Definišemo skup \( \mathbb{R}^n \) kao skup svih \(n\)-torki realnih brojeva
+    \[
+        \mathbb{R}^n := \{(x_1, \dots , x_n) \mid x_i \in \mathbb{R}, i = 1, \dots , n \}.
+    \]
+
+\end{definicija}
+
+\begin{definicija}
+    Uvodimo \textbf{vektorski prostor} kao \( (\mathbb{R}^n, +, \cdot) \) gde
+    elemente ovog vektorskog prostora nazivamo \textit{vektorima} koje ćemo označavati 
+    \[
+        x \in \mathbb{R}^n := (x_1, \dots, x_n).
+    \]
+    i definišemo:
+    \begin{itemize}
+        \item Sabiranje \( + : \mathbb{R}^n + \mathbb{R}^n \rightarrow \mathbb{R} \)
+
+            \( x, y \in \mathbb{R}^n, \quad x + y = (x_1, \dots, x_n) + (y_1, \dots, y_n) 
+            = (x_1 + y_1, \dots, x_n + y_n) \)
+        \item Množenje skalarom(realnim brojem) \( \cdot : \mathbb{R} \times \mathbb{R}^n 
+        \rightarrow \mathbb{R}^n \)
+
+            \( \lambda \in \mathbb{R}, x \in \mathbb{R}^n, \quad \lambda \cdot x = 
+            \lambda \cdot (x_1, \dots, x_n) = (\lambda x_1, \dots, \lambda x_n) \)
+    \end{itemize}
+\end{definicija}
+
+\pitanje{
+    Da li možemo izvesti oduzimanje dva vektora \( x, y \in \mathbb{R}^n \), gde je 
+    \( x = (x_1, \dots, x_n) \)
+    a \( y= (y_1, \dots, y_n) \)?
+
+    \medskip
+    \textbf{Da! } \( x - y = x + (-1) \cdot y\)
+    \begin{align*}
+        (x_1, \dots, x_n) - (y_1, \dots, y_n) &= (x_1, \dots, x_n) 
+        + (-1) \cdot (y_1, \dots, y_n) \\
+        &= (x_1, \dots, x_n) + (-y_1, \dots, -y_n) \\
+        &= (x_1 - y_1, \dots, x_n - y_n).
+    \end{align*}
+}
+
+
+\begin{definicija}
+    \textbf{Skalarni proizvod} na \( \mathbb{R}^n \) definišemo sa \( <,> := \mathbb{R}^n
+    \times \mathbb{R}^n \rightarrow \mathbb{R}\), odnosno
+
+    \[
+        <(x_1, \dots, x_n), (y_1, \dots, y_n)> = x_1y_1 + \dots + x_ny_n
+         := \sum_{i = 1}^{n}{x_iy_i}.
+    \]
+\end{definicija}
+
+\begin{definicija}
+    \textbf{Norma vektora} \( x = (x_1, \dots, x_n) \in \mathbb{R}^n \) je 
+    \[
+        \lVert x \rVert = \lVert (x_1, \dots, x_n) \rVert := \sqrt{<x,x>} 
+        = \sum_{i=1}^{n}{x_i^2}
+    \]
+\end{definicija}
+
+\begin{primer}
+    \( x = (2, 1, -3), \; y = (0, 0, 1) \):
+    \tdplotsetmaincoords{70}{105}
+    \begin{center}
+        \begin{tikzpicture}[tdplot_main_coords, scale=1]
+            
+            % Ose
+            \draw[->] (0,0,0) -- (3,0,0) node[anchor=north east]{$x_1$};
+            \draw[->] (0,0,0) -- (0,2,0) node[anchor=north west]{$x_2$};
+            \draw[->] (0,0,-4) -- (0,0,2) node[anchor=south]{$x_3$};
+
+            % Vektori
+            \draw[->, thick, blue] (0,0,0) -- (2,1,-3) node[below right] {$x$};
+            \draw[->, thick, red] (0,0,0) -- (0,0,1) node[right] {$y$};
+
+            % Krajnje tačke
+            \fill (2,1,-3) circle (0.8pt) node[below left] {$(2,1,-3)$};
+            \fill (0,0,1) circle (0.8pt) node[below right] {$(0,0,1)$};
+
+            % Projekcije za x
+            \draw[dashed] (2,1,-3) -- (2,1,0);
+            \draw[dashed] (2,1,0) -- (2,0,0);
+            \draw[dashed] (2,1,0) -- (0,1,0);
+
+        \end{tikzpicture}
+    \end{center}
+
+    Ovde je skalarni proizvod \( <x, y> = -3 \);
+    
+    Norma vektora \( x \) je  \( \lVert x \rVert= \sqrt{2^2 + 1^2 + 3^2} 
+    = \sqrt{4 + 1 + 9} = \sqrt{14} \);
+
+    Norma vektora \( y \) je \( \lVert y \rVert= \sqrt{0^2 + 0^2 + 1^2} 
+    = \sqrt{0 + 0 + 1} = \sqrt{1} = 1 \);
+
+\end{primer}
+
+
+\begin{definicija}
+     Norme definišu \textbf{rastojanje između dve tačke} sa oznakom \(d(x, y) = 
+     \lVert x-y \rVert \) kao
+     \[
+        \lVert x - y \rVert := \sqrt{(x_1 - y_1)^2 + \dots + (x_n - y_n)^2} 
+        = \sum_{i=1}^{n}{(x_i - y_i)^2}.
+     \] 
+\end{definicija}
+
+\subsubsection{Neka svojstva skupova u \( \mathbb{R}^n \)}
+
+\begin{definicija}
+    \textbf{Otvorena kugla} ili \textbf{otvorena lopta} u \(\mathbb{R}^n\) sa centrom u \(a\), poluprečnikom
+    \(r > 0\) je skup
+    \[
+        B(a,r) := \{ x \in \mathbb{R}^n \mid \lVert x - a \rVert < r \}.
+    \]
+\end{definicija}
+
+\begin{primer}
+    U \( R^2 \), za tačku \( a = (2, 3) \) i poluprečnik \( r = 1 \), otvorena kugla
+    izgleda ovako: 
+    \begin{center}
+        \begin{tikzpicture}[scale=0.91]
+            % Ose
+            \draw[->] (0,0) -- (5,0) node[right] {$x$};
+            \draw[->] (0,0) -- (0,5) node[above] {$y$};
+
+            % Mreža (opciono)
+            \draw[step=1, gray!30, very thin] (0,0) grid (5,5);
+
+            % Otvorena kugla
+            \fill[blue!15] (2,3) circle (1);
+            \draw[blue, thin, dashed] (2,3) circle (1);
+
+            % Centar
+            \fill (2,3) circle (1.2pt);
+            \node[above right] at (2,3) {$a=(2,3)$};
+
+            % Poluprečnik
+            \draw[red, thick] (2,3) -- (3,3);
+            \node[below] at (2.5,3) {$r=1$};
+        \end{tikzpicture}
+    \end{center}
+    Tačka \( (x,y)\) pripada ovoj otvorenoj kugli samo ako važi \( \sqrt{(x-2)^2+(y-3)^2} < 1 \).
+\end{primer}
+
+
+\begin{definicija}
+    \textbf{Zatvorena kugla} ili \textbf{zatvorena lopta} u \(\mathbb{R}^n\) sa centrom u \(a\),
+    poluprečnikom \(r > 0\) je skup
+    \[
+        B[a,r] := \{ x \in \mathbb{R}^n \mid \lVert x - a \rVert \leq r \}.
+    \]
+\end{definicija}
+
+
+\begin{primer}
+    U \( \mathbb{R}^2 \), za tačku \( a = (1, 1) \) i poluprečnik \( r = 2 \), zatvorena kugla
+    izgleda ovako:
+
+    \begin{center}
+        \begin{tikzpicture}[scale=0.91]
+
+            % Ose
+            \draw[->] (-2,0) -- (5,0) node[right] {$x$};
+            \draw[->] (0,-2) -- (0,5) node[above] {$y$};
+
+            % Mreža
+            \draw[step=1, gray!30, very thin] (-2,-2) grid (5,5);
+
+            % Zatvorena kugla
+            \fill[blue!15] (1,1) circle (2);
+            \draw[blue, thick] (1,1) circle (2);
+
+            % Centar
+            \fill (1,1) circle (1.2pt);
+            \node[above right] at (1,1) {$a=(1,1)$};
+
+            % Poluprečnik
+            \draw[red, thick] (1,1) -- (3,1);
+            \node[below] at (2,1) {$r=2$};
+
+        \end{tikzpicture}
+    \end{center}
+    Zatvorena kugla sadrži i svoju ivicu za razliku od otvorene kugle. Tačka \( (x,y)\) joj pripada
+    samo ako važi \( \sqrt{(x-1)^2 + (y-1)^2} \leq 2 \).
+\end{primer}
+
+\begin{definicija}
+    \textbf{Rub otvorene i zatvorene kugle} u \(\mathbb{R}^n\) je 
+    \[
+        \partial B(a,r) = \partial B[a,r] = \{ x \in \mathbb{R}^n \mid \lVert x - a \rVert = r \}
+    \]
+\end{definicija}
+
+\begin{definicija}
+    Neka je skup \(A \subseteq \mathbb{R}^n\). Za tačku \(a \in \mathbb{R}^n\) kažemo
+    da je \textbf{rubna tačka} skupa \(A \) ako za svako \(r > 0\) važi
+    \begin{align*}
+        B(a, r) \cap A &\neq \emptyset \\
+        B(a, r) \cap A^c &\neq \emptyset
+    \end{align*}
+\end{definicija}
+
+\begin{primer}
+    Ovako izgleda definicija odozgo:
+    \begin{center}
+        \begin{tikzpicture}[scale=1.1]
+
+            % Osa (opciono)
+            \draw[->, gray] (-0.5,0) -- (7,0);
+            \draw[->, gray] (0,-0.5) -- (0,5.5);
+
+            % Skup A
+            \fill[red!15]
+                (1.2,1.3)
+                .. controls (1.8,3.8) and (3.2,4.3) ..
+                (4.8,3.8)
+                .. controls (6.0,3.3) and (5.8,1.8) ..
+                (4.9,1.3)
+                .. controls (3.8,0.8) and (2.1,0.9) ..
+                (1.2,1.3);
+            \draw[red, thick]
+                (1.2,1.3)
+                .. controls (1.8,3.8) and (3.2,4.3) ..
+                (4.8,3.8)
+                .. controls (6.0,3.3) and (5.8,1.8) ..
+                (4.9,1.3)
+                .. controls (3.8,0.8) and (2.1,0.9) ..
+                (1.2,1.3);
+
+            % Oznaka skupa A
+            \node[red!70!black] at (3.3,2.5) {$A$};
+
+            % Rubna tacka a
+            \coordinate (a) at (4.75,3.72);
+            \fill[black] (a) circle (1.2pt);
+            \node[above right] at (a) {$a$};
+
+            % Kugle oko tacke a
+            \draw[blue, thick] (a) circle (0.9);
+            \draw[blue, thick] (a) circle (0.55);
+            \draw[blue, thick] (a) circle (0.28);
+
+            % Oznaka jedne kugle
+            \node[blue] at (5.9,4.45) {$B(a,r)$};
+
+        \end{tikzpicture}
+    \end{center}
+
+    Na slici je crvenom bojom predstavljen skup \(A\), dok je tačka \(a\) rubna tačka skupa \(A\).
+    Za svako \(r>0\), otvorena kugla \(B(a,r)\) sadrži i tačke koje pripadaju skupu \(A\)
+    i tačke koje ne pripadaju skupu \(A\), odnosno važi
+    \[
+        B(a,r)\cap A \neq \emptyset
+        \qquad \text{i} \qquad
+        B(a,r)\cap A^c \neq \emptyset.
+    \]
+\end{primer}
+
+\begin{definicija}
+    \textbf{Granica (rub)} skupa \(A \subseteq\) je skup svih rubnih tačaka s oznakom
+    \(\partial A\).
+\end{definicija}
+
+\begin{definicija}
+    Skup \(A \subseteq \mathbb{R}^n \) je \textbf{otvoren skup} ako važi
+    \[
+        (\forall a \in A) (\exists r > 0) : \ B(a,r) \subset A,
+    \]
+    odnosno da za svaku tačku u skupu \(A\) možemo napraviti kuglu oko nje koja je cela unutar
+    skupa \(A\).
+\end{definicija}
+
+\begin{definicija}
+    Skup \(A \subseteq \mathbb{R}^n \) je \textbf{zatvoren skup} ako je \(A^c\) otvoren skup.
+
+    Skup \(A \subseteq \mathbb{R}^n \) je takođe zatvoren skup ako sadrži sve svoje 
+    rubne tačke, odnosno \( \partial A \subseteq A \).
+\end{definicija}
+
+\subsection{Nizovi u \(\mathbb{R}^k\)}
+
+Pošto \(n\) koristimo za indeks niza \(a_n\), \(k\) će nam označavati dimenziju prostora.
+
+\begin{definicija}
+    Niz \(a_n \in \mathbb{R}^k, n \in \mathbb{N} \) je niz uređenih \(k\)-torki, \(k \geq 1\)
+    \[
+        a_n = (\overset{1}{a_n}, \overset{2}{a_n}, \dots, \overset{k}{a_n}).
+    \]
+\end{definicija}
+
+\begin{primer}
+    \(k = 2\):
+    \[
+        a_n = (\frac{1}{n}, n) \in \mathbb{R}^2.
+    \]
+\end{primer}
+
+\begin{definicija}
+    Niz \(a_n\) u \(\mathbb{R}^k\) \textit{konvergira} ka \(a \in \mathbb{R}^k \) ako važi
+    \[
+        (\forall \varepsilon > 0) (\exists n_0 \in \mathbb{N}) 
+        (\forall n \geq n_0 \implies \lVert a_n - a \rVert < \varepsilon) 
+    \]
+    \begin{center}
+        odnosno drugačijim zapisom 
+    \end{center}
+    \[
+        (\forall \varepsilon > 0) (\exists n_0 \in \mathbb{N}) 
+        (\forall n \geq n_0 \implies d(a_n, a) < \varepsilon) 
+    \]
+    i ima oznaku
+    \[
+        \lim_{n \to \infty} {a_n} = a.
+    \]
+\end{definicija}
+    
+\begin{definicija}
+    Ako niz ne konvergira, kažemo da \textit{divergira}.
+\end{definicija}
+
+\begin{stav}
+    Za niz \(a_n = (\overset{1}{a_n}, \overset{2}{a_n}, \dots, \overset{k}{a_n}) \in \mathbb{R}^k\)
+    i \(a = (a_1, a_2, \dots, a_k) \in \mathbb{R}^k\) važi
+    \[
+        \lim_{n \to \infty} a_n = a \in \mathbb{R}^k \iff 
+        \lim_{n \to \infty} \overset{1}{a_n} = a_1 \dots,
+        \lim_{n \to \infty} \overset{k}{a_n} = a_k
+    \]
+\end{stav}
+\begin{dokaz}
+    $\\$
+    \(\implies\)
+    
+    Važi \(\lim_{n \to \infty} a_n = a \in \mathbb{R}^k\). 
+
+
+    Neka je \(i \in {1, \dots, k}\) proizvoljni indeks. Pokažimo
+    \(\lim_{n \to \infty} \overset{i}{a_n} = a_i.\)
+
+
+    Neka je \(\varepsilon > 0\) proizvoljno. Tada 
+    \((\forall \varepsilon > 0)(\exists n_0 \in \mathbb{N})
+        (\forall n \geq n_0 \implies \lVert a_n - a \rVert < \varepsilon )\)
+    \begin{align*}
+        \lvert \overset{i}{a_n} - a_i \rvert &= \sqrt{(\overset{i}{a_n} - a_i)^2} \\
+        &\leq \sqrt{(\overset{1}{a_n} - a_1)^2 + \dots +
+        (\overset{k}{a_n} - a_k)^2} \\
+        &= \lVert a_n - a \rVert .
+    \end{align*}
+    Iz pretpostavke konvergencije u Definiciji \textbf{1.19} važi da
+    \(\lVert a_n - a \rVert < \varepsilon\). Tako da onda važi
+    \[
+        \lvert \overset{i}{a_n} - a_i \rvert \leq \lVert a_n - a \rVert  < \varepsilon.
+    \]
+    Dakle za isto \(n_0\) važi \(\forall n \geq n_0\).
+    \[
+        \lvert \overset{i}{a_n} - a_i \rvert < \varepsilon.
+    \]
+    $\\$
+    \(\impliedby\)
+
+    Pretpostavićemo da važi
+    \[
+        \lim_{n \to \infty} \overset{1}{a_n} = a_1 \dots,
+        \lim_{n \to \infty} \overset{k}{a_n} = a_k
+    \].
+    Neka je \( \varepsilon > 0 \) proizvoljno. Treba naći \(n_0 \in \mathbb{N}\)
+    takvo da \(\forall n \geq n_0\)
+    \[
+        \lVert a_n - a \rVert  < \varepsilon.
+    \]
+    Pošto smo pretpostavili da važe \(\lim_{n \to \infty} \overset{1}{a_n} = a_1, \dots,
+    \lim_{n \to \infty} \overset{k}{a_n} = a_k\),
+    onda
+    \begin{align*}
+    (\exists n_1 &\in \mathbb{N}) (\forall n \geq n_1)
+    \lvert \overset{1}{a_n} - a_1 \rvert < \frac{\varepsilon}{k}\\
+    &\vdots \\
+    (\exists n_k &\in \mathbb{N}) (\forall n \geq n_k) 
+    \lvert \overset{k}{a_n} - a_k \rvert < \frac{\varepsilon}{k}\\
+    \end{align*}
+    Neka sada uzmemo najveće \(n\), odnosno
+    \[
+        n_0 = \max\{n_1, \dots, n_k\}.
+    \]
+    Tada će za takvo \(n_0\) važiti i sve prethodne \(k\) nejednakosti.
+
+    \vspace{1em}
+    Imamo sledeću nejednakost
+    \[
+        \sqrt{(\overset{1}{a_n} - a_1)^2 + \dots +
+        (\overset{k}{a_n} - a_k)^2}
+        \leq
+        \lvert \overset{1}{a_n} - a_1 \rvert + \dots +
+        \lvert \overset{k}{a_n} - a_k \rvert \tag{1}
+    \].
+    Desni deo nejednakosti je veći kad bismo kvadrirali pa možemo
+    ovako postaviti (svi su nenegativni pa smemo).
+
+    Sada za svako \(n\) veće od izabranog maksimuma \(n_0\), tojest
+    \(\forall n \geq n_0\)
+    \begin{align*}
+        \sqrt{(\overset{1}{a_n} - a_1)^2 + \dots +
+        (\overset{k}{a_n} - a_k)^2}
+        &\leq
+        \lvert \overset{1}{a_n} - a_1 \rvert + \dots +
+        \lvert \overset{k}{a_n} - a_k \rvert. \\
+        &< \frac{\varepsilon}{k} + \dots + \frac{\varepsilon}{k} \\
+        &= \varepsilon.
+    \end{align*}
+\end{dokaz}
+
+\napomena{ Kod nejednakosti \textbf{(1)} ideja je da dokažemo da je 
+    \(\lVert a_n - a \rVert < \varepsilon\) koristeći proizvoljni 
+    \(\varepsilon > 0\) i \(n_0\) koje imamo. Znamo da je \(\lVert a_n - a \rVert =
+    \sqrt{(\overset{1}{a_n} - a_1)^2 + \dots +
+        (\overset{k}{a_n} - a_k)^2} \) i da bismo došli do  \(\varepsilon\), sa druge
+        strane koristimo  
+        \(\lvert \overset{1}{a_n} - a_1 \rvert 
+        \dots \lvert \overset{k}{a_n} - a_k \rvert.\) 
+    }
+
+\subsection{Funkcije u \(\mathbb{R}^k\)}
+
+\begin{definicija}
+    \(D_f\) je domen funkcije \(f: D_f \to \mathbb{R}\) (skup tačaka u kojima je 
+    funkcija \(f\) definisana).
+\end{definicija}
+
+\begin{primer}
+    \(f(x, y) = \sqrt{x + y}\)
+
+    \(D_f = \{ (x + y) \in \mathbb{R}^2 \mid x + y \geq 0\}\).
+
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{axis}[
+                xlabel={$x$},
+                ylabel={$y$},
+                axis lines=middle,
+                xmin=-4, xmax=4,
+                ymin=-4, ymax=4,
+                xtick distance=1,
+                ytick distance=1,
+                grid=both,
+                axis equal
+            ]
+
+            % Osenčena oblast domena: y >= -x
+            \addplot[
+                draw=none,
+                fill=red!30!white,
+                fill opacity=0.2
+            ] coordinates {(-4,4) (4,4) (4,-4) (-4,4)};
+
+            % Granica domena
+            \addplot[red, thick, dashed, domain=-4:4] {-x};
+
+            \node at (axis cs:2,3) {$x+y\ge 0$};
+            \node at (axis cs:2.2,-1.8) {$y=-x$};
+
+            \end{axis}
+        \end{tikzpicture}
+    \end{center}
+
+\end{primer}
+
+\begin{definicija}
+    \(a \in \mathbb{R}^k\) je \textbf{tačka nagomilavanja} skupa 
+    \(A \subseteq \mathbb{R}^k\) ako važi
+    \[
+        (\forall \varepsilon > 0) (\exists B(a, \varepsilon)) 
+        A \cap (\underbrace{B(a, \varepsilon) \setminus 
+        \{a\}}_{\text{probušena okolina}}) \neq \emptyset
+    \]
+\end{definicija}
+
+\begin{definicija}
+    Neka je data funkcija \(f: D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^k\)) i
+    neka je \(a \in \mathbb{R}^k\) tačka nagomilavanja skupa \(D_f\), tada važi
+    \[
+        \lim_{x \to a} f(x) = L \in \mathbb{R}.
+    \]
+    Tojest funkcija \(f\) konvergira ka \(L \in \mathbb{R}\) kada \(x \to a\)
+    ako važi
+    \[
+        (\forall \varepsilon > 0) (\exists \delta > 0) (\forall x \in D_f)
+        (\underbrace{x \in B(a, \delta) \setminus \{a\}}_
+        {0 < \lVert x - a \rVert < \delta} \implies \lvert f(x) - L \rvert < \varepsilon).
+    \]
+    Kažemo da je \(L \in \mathbb{R}\) \textbf{limes funkcije} \(f\) kada \(x\) teži \(a\).
+\end{definicija}
+
+\napomena{tačka \(a\)
+    ne mora da pripada \(D_f\).}
+
+
+\begin{stav}
+    Funkcije \(f: D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^k\)) i
+    \(g: D_g \to \mathbb{R}\) (\(D_g \subseteq \mathbb{R}^k\)), neka je 
+    \(a \in \mathbb{R}^k\) tačka nagomilavanja skupova \(D_f\) i \(D_g\). Neka je
+    \(\lim_{x \to a}f(x) = L \in \mathbb{R} \text{ i } 
+    \lim_{x \to a}g(x) = S \in \mathbb{R}\). Tada važi
+    \begin{align}
+        &\lim_{x \to a} (f\pm g)(x) = L + S, \\
+        &\lim_{x \to a} (f \cdot g)(x) = L \cdot S, \\
+        &\lim_{x \to a} \frac{f(x)}{g(x)} = \frac{L}{S} 
+        \text{, ako \(\exists B(a, r) (\forall x \in B(a,r) \cap D_g)\)
+         \(g(x) \neq 0\)}.
+    \end{align}
+\end{stav}
+
+\begin{stav}
+    \textbf{(Hajneov princip)}
+    Neka je \(f: D_f \to \mathbb{R}\), \(a \in \mathbb{R}^k\) tačka nagomilavanja
+    skupa \(D_f\). Tada važi
+    \[
+        \lim_{x \to a} f(x) = L \iff \forall a \in \mathbb{R}^k 
+        \lim_{n \to \infty} a_n = a \implies \lim_{n \to \infty} f(a_n) = L. 
+    \]
+\end{stav}
+
+
+\subsection{Neprekidnost funkcije}
+
+\begin{definicija}
+    Neka je \(D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^k\)). Neka je 
+    \(a \in D_f\) tačka nagomilavanja skupa \(D_f\). Kažemo da je
+    funkcija \(f\) neprikidna u tački \(a \in D_f\) ako važi
+    \[
+        \lim_{x \to a}f(x) = f(a).
+    \]
+\end{definicija}
+
+\begin{definicija}
+    Kažemo da je funkcija \(f\) neprekidna na svom domenu ako je neprekidna
+    u svakoj tački nagomilavanja.
+\end{definicija}
+
+\begin{stav}
+    Ako su funkcije \(f: D_f \to \mathbb{R}\) i \(g: D_g \to \mathbb{R}\) neprekidne
+    u tački \(a \in D_f \cap D_g\), tada je funkcija
+    \[
+        \text{ neprekidna u } a
+        \left\{
+        \begin{aligned}
+        f \pm g, \\
+        f \cdot g, \\
+        \frac{f}{g} \quad
+        \text{ako } \exists B(a,r) \text{ td. }
+        \forall x \in B(a,r) \ g(x) \neq 0.
+        \end{aligned}
+        \right.
+    \]
+\end{stav}
+
+
+\begin{stav}
+    \(f_1: D \to \mathbb{R}, f_2: D \to \mathbb{R}, \dots , f_k: D \to \mathbb{R}\)
+
+    \(f:D \to \mathbb{R}^k\), \(f(x) = (f_1(x), f_2(x), \dots , f_k(x))\)
+
+    \(g: \mathbb{R}^k \to \mathbb{R}\).
+    
+    Neka je \(f_1, \dots, f_k\) neprekidna u \(a \in D\), neka je \(b = (f_1(a), \dots, f_k(a))\)
+    
+    Neka je funkcija \(g\) neprekidna u \(b\), 
+    tada je funkcija \(g \circ f: \mathbb{R}^k \to \mathbb{R}\) neprekidna u tački \(a\).
+\end{stav}
+
+\begin{dokaz}
+    \(\\\)
+    Neka je \(a_n \in \mathbb{R}^k\) proizvoljan niz takav da 
+    \(\lim_{n \to \infty}a_n = a\).
+    
+    Dokazujemo \(\lim_{n \to \infty}g(f(a_n)) = g(f(a))\).
+
+    Funkcije \(f_1, \dots, f_k\) su neprekidne u \(a\).
+    \begin{align*}
+        &\overset{\text{Hajne}}{\implies} \lim_{n \to \infty} f_1(a_n) = f_1(a), \dots ,
+        \lim_{n \to \infty} f_k(a_n) = f_k(a)\\
+        &\overset{\text{stav 2. čas}}{\implies} \lim_{n \to \infty}(f_1(a_n), 
+        \dots, f_k(a_n)) = (f_1(a), \dots, f_k(a)) \\
+        &\implies \lim_{n \to \infty} f(a_n) = f(a) = b \\
+        &\overset{\text{g neprekidna i Hajne}}{\implies} \lim_{n \to \infty} g(f(a_n)) = g(b).
+    \end{align*}
+
+\end{dokaz}
+
+\subsection{Vektorske funkcije}
+
+\begin{definicija}
+    \textbf{Vektorska funkcija} je funkcija \(F:D_F \to \mathbb{R}^k\) 
+    \((D_f \subseteq \mathbb{R}^n)\). 
+\end{definicija}
+
+\begin{primer}
+    \(F(x, y) = (x^2 + y, \sin{x}), \quad F: \mathbb{R}^2 \to \mathbb{R}^2 \).
+\end{primer}
+
+\begin{definicija}
+    Neka je \(F: D_f \to \mathbb{R}^k\) (\(D_f \subseteq \mathbb{R}^n\))
+    vektorska funkcija i \(a \in \mathbb{R}^n\) tačka nagomilavanja. Tada
+    je \(F(x) = L \in \mathbb{R}^k\) ako i samo ako
+
+    \[
+        (\forall \varepsilon > 0) (\exists \delta > 0) 
+        (\forall x \in B(a, \delta) \setminus \{a\} \cap D_f) 
+        f(x) \in B(L, \varepsilon)
+    \]
+    tojest drugačije
+    \[
+        (\forall \varepsilon > 0) (\exists \delta > 0)
+        (\forall x \in D_f) 0 < \lVert x - a \rVert < \delta
+        \implies \lVert f(x) - L \rVert < \varepsilon.
+    \]
+\end{definicija}
+
+\begin{definicija}
+    
+    Funkcija \(F: D_f \to \mathbb{R}^k\) (\(D_f \subseteq \mathbb{R}^n\))
+    je neprekidna funkcija u \(a \in D_f \) tačka nagomilavanja ako važi
+    \[
+        \lim_{x \to a}F(x) = F(a).
+    \]
+\end{definicija}
+
+\begin{primer}
+    Naći \(D_f\):
+
+    \begin{align*}
+        F(x, y) &= (ln(x-y), \sqrt[3]{\cos x}) \\
+        x - y &> 0 \\
+        x &> y \\
+        D_f &= \{(x,y) \in \mathbb{R}^2 \mid x > y \} \text{ - otvoren skup.}
+    \end{align*}
+\end{primer}
+
+
+\subsection{Parcijalni izvodi}
+
+\begin{definicija}
+    Prvi parcijalni izvod funkcije \(f\) u \(x = (x_0, y_0)\) je
+    \[
+        \frac{\partial f}{\partial x_k} (x) \overset{\text{def}}{=}
+        \lim_{h \to 0} \frac{f(x_0 + h, y_0) - f(x_0, y_0)}{h}. 
+    \]
+\end{definicija}
+
+
+\subsection{Izvod u pravcu}
+
+Neka je \(f: D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^n\)) 
+i neka je \(v \in \mathbb{R}^k\).
+
+%TODO - primer
+
+\begin{definicija}
+    \textit{Izvod} funkcije \(f\) \textit{u pravcu vektora} \(v = (v_1, \dots, v_n)\in \mathbb{R}^n\)
+    u tački \(x = (x_1, \dots, x_n) \in D_f\) je 
+    \[
+        f'_v(x) = \lim_{h \to 0} \frac{f(x+hv) - f(x)}{h}, \quad h\in \mathbb{R}.
+    \]
+    Dakle
+    \[
+        f'_v(x) = \lim_{h \to 0} \frac{f(x_1 + hv_1, \dots x_n + hv_n) 
+        - f(x_1, \dots , x_n)}{h}, \quad h\in \mathbb{R}
+    \]
+\end{definicija}
+
+
+
+\begin{stav}
+    \begin{align*}
+        \frac{\partial f}{\partial x_1} (x) &= f'_v(x), \quad v = (1, 0, \dots , 0) \\
+        &\vdots \\
+        \frac{\partial f}{\partial x_n} (x) &= f'_v(x), \quad v = (0, 0, \dots , 1) \\
+    \end{align*}
+\end{stav}
+
+%TODO - primer
+
+\subsection{Diferencijabilnost funkcije f}
+
+
+\textbf{Analiza 1:}
+
+Za funkciju \(f: (a, b) \to \mathbb{R}\), kažemo da je diferencijabilna u 
+\(x \in (a, b) \) ako 
+\begin{align*}
+    \exists \lim_{h \to 0} \frac{f(x + h) - f(x)}{h} = f'(x) &\iff \lim_{h \to 0}
+    \frac{f(x+h) - f(x) - f'(x) h}{h} = 0 \\
+    &\iff f(x+h) - f(x) - f'(x)h = o(h), \quad h \to 0 \\
+    &\iff f(x+h) = f(x) + f'(x)h + o(h), \quad h \to 0
+\end{align*}
+
+\begin{definicija}
+    Neka je \(fL D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^n\)) otvoren skup.
+    Tada je funkcija \(f\) \textit{diferencijabilna} u tački \(x \in D_f\) ako postoji
+    linearno preslikavanje \(L: \mathbb{R}^n \to \mathbb{R}\) tako da važi
+    \begin{align*}
+        f(x+h) &= f(x) + L\cdot h + o(\lVert h \rVert), \quad h \to 0 \\
+        &\text{tojest} \\
+        f(x+h) &= f(x) + L_1h_1 + \dots + L_nh_n + o(\lVert h \rVert), \quad h \to 0 \\
+        h \in \mathbb{R}^n, \quad h &= (h_1, \dots, h_n), \quad \lVert h \rVert = \sqrt{h^{2}_1 + \dots + h^{2}_n} \in \mathbb{R}.
+    \end{align*}
+\end{definicija}
+
+%TODO - primer
+
+\begin{teorema}
+    Ako je \(f: D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^n\)) diferencijabilna
+    u tački \(x \in D_f\), tada postoje 
+    \[
+        \frac{\partial f}{\partial x_1}(x), \dots, \frac{\partial f}{\partial x_n}(x)
+    \]
+    i važi 
+    \[
+        f(x+h) = f(x) + \frac{\partial f}{\partial x_1}(x)h_1 + \dots + 
+        \frac{\partial f}{\partial x_n}(x)h_n + o(\lVert h \rVert), \quad h \to 0.
+    \]
+\end{teorema}
+
+%TODO - dokaz
+
+\begin{stav}
+    \(f:D_f \to \mathbb{R}\) diferencijabilna u tački \(a \in D_f \implies f\)
+    neprekidna u \(a \in D_f\).
+
+\end{stav}
+\napomena{Obrnuti smer ne važi, odnosno ako je \(f: D_f \to \mathbb{R}\) neprekidna funkcija,
+ne mora da znači da je i diferencijabilna.}
+
+\napomena{Ako funkcija ima sve parcijalne izvode, ne mora ni tada značiti da je diferencijabilna.}
+%TODO - dokaz
+
+%TODO - primer
+
+\begin{definicija}
+    Neka je \(f: D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^n\)) funkcija koja
+    ima sve parcijalne izvode 
+    \(\frac{\partial f}{\partial x_1}, \dots, \frac{\partial f}{\partial x_n}\),
+    \textit{gradijent} funkcije \(f\) u tački \(x \in D_f\) je vektor
+    \[
+        \triangledown f(x) = 
+        \left(\frac{\partial f}{\partial x_1}, \dots, \frac{\partial f}{\partial x_n}\right) 
+        \in \mathbb{R}^n.
+    \]
+\end{definicija}
+
+\(\triangledown f\) je primer vektorskog polja.
+
+%TODO - primer
+
+\begin{teorema}
+    Neka je funkcija \(f: D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^n\))
+    diferencijabilna za svaku tačku domena, odnosno 
+    \(\forall x \in D_f\). Tada \(\exists f'_v(x)\) za svaki vektor 
+    \(v \in \mathbb{R}^n\)
+    \begin{align*}
+        f'_v(x) &= <\triangledown f(x), v>, \quad v \in \mathbb{R}^n,\, v = (v_1, \dots , v_n) \\
+        f'_v(x) &= \frac{\partial f}{\partial x_1}(x)v_1 + \dots
+        + \frac{\partial f}{\partial x_n}(x)v_n. 
+    \end{align*}
+\end{teorema}
+
+\napomena{Obrnuto ne mora da važi!}
+
+%TODO - primer
+
+\begin{teorema}
+    Neka je data funkcija \(f: D_f \to \mathbb{R}\) (\(D_f \subseteq \mathbb{R}^n\))
+    takva da postoje svi parcijalni izvodi 
+    \(\frac{\partial f}{\partial x_1}, \dots, \frac{\partial f}{\partial x_n}\)
+    za \(\forall x \in D_f\) i neka su oni neprekidne funkcije. Tada je 
+    \(f\) diferencijabilna u svakoj tački domena, odnosno \(\forall x \in D_f\).
+\end{teorema}
+
+
+\subsection{Diferencijabilnost vektorske funkcije}
+
+\begin{definicija}
+    Funkcija \(F: D_F \to \mathbb{R}^m\) (\(D_F \subseteq \mathbb{R}^n\)) je diferencijabilna
+    u tački \(a = (a_1, \dots, a_n) \in D_F\) ako postoji linearno preslikavanje
+    \(L: \mathbb{R}^n \to \mathbb{R}^m\) takvo da važi
+    \[
+        F(a+h) = F(a) + L\cdot h + o(h), 
+        \quad h \to 0, \;h = (h_1, \dots, h_n) \in \mathbb{R}^n
+    \]
+\end{definicija}
+
+\begin{definicija}
+    F je diferencijabilna funkcija na \(D_F\) ako je diferencijabilna u svakoj tački 
+    domena \(D_F\).
+\end{definicija}
+
+\begin{primer}
+    \(\\\)
+    \begin{align*}
+        F(x,y) &= (2x + 3y, 4x + 5y), \; h = (h_1, h_2) \\
+        &(2(x + h_1) + 3(y + h_2), 4(x + h_1) + 5(y + h_2)) \\
+        &(2x + 3y, 4x + 5y) + L \cdot (h_1, h_2) + o(h) \\
+        &L(h_1, h_2) = (2h_1 + 3h_2, 4h_1 + 5h_2).
+    \end{align*}
+    \napomena{\(o(h)\) je nula jer je funkcija \(F\) linearna.}
+\end{primer}
+
+\begin{teorema}
+    Neka je funkcija \(F: D_F \to \mathbb{R}^m\) \(D_F \subseteq \mathbb{R}^n\) takva da
+    \(F(x) = (f_1(x), \dots, f_m(x))\), \(f_1, \dots, f_m : D_F \to \mathbb{R}\), tada je
+    \(F\) diferencijabilna u tački \(a \in D_F\) ako i samo ako su funkcije 
+    \(f_1, \dots, f_m\) diferencijabilne u tački \(a \in D_f\) i važi
+    \[
+        L =
+        \begin{pmatrix}
+        \frac{\partial f_1}{\partial x_1} & \frac{\partial f_1}{\partial x_2} & \cdots & \frac{\partial f_1}{\partial x_n} \\
+        \vdots & \vdots & \ddots & \vdots \\
+        \frac{\partial f_m}{\partial x_1} & \frac{\partial f_m}{\partial x_2} & \cdots & \frac{\partial f_m}{\partial x_n}
+        \end{pmatrix} 
+    \]
+\end{teorema}
+
+\begin{dokaz}
+    \(\\\)
+    \(F\) je diferencijabilna u \(a \in D_f \):
+    \begin{align*}
+        &\iff F(a + h) = F(a) + L \cdot h + o(h), 
+        \quad h \to 0, \; h \in \mathbb{R}^n \\
+        &\iff \begin{pmatrix}
+                f_1(a + h) \\
+                \vdots \\
+                f_m(a + h)
+            \end{pmatrix}
+        =
+            \begin{pmatrix}
+                f_1(a) \\
+                \vdots \\
+                f_m(a)
+            \end{pmatrix}
+        +
+            \begin{pmatrix}
+                a_{11} & \cdots & a_{1n} \\
+                \vdots & \ddots & \vdots \\
+                a_{m1} & \cdots & a_{mn}
+            \end{pmatrix}
+            \begin{pmatrix}
+                h_1 \\
+                \vdots \\
+                h_m
+            \end{pmatrix}
+        +
+            \begin{pmatrix}
+                o(\|h\|) \\
+                \vdots \\
+                o(\|h\|)
+            \end{pmatrix} \\
+        &\iff f_j(a+h) = f_j(a) + \sum_{i = 1}^{n}{a_{ji}\cdot h_i} + o(\lVert h \rVert),
+        \quad h \to 0, \; \forall j = 1, \dots, m \\
+        &\iff f_j \text{ je diferencijabilna } \forall j = 1, \dots, m.
+    \end{align*} 
+
+    Važi
+    \[
+        a_{ji} \text{ je } \frac{\partial f_j}{\partial x_i} (a)
+        \text{(2. nedelja)}, \quad i = 1, \dots, n; \; j = 1, \dots, m.
+    \]
+\end{dokaz}
+
+\begin{primer}
+    Za prošli primer \((2x + 3y, 4x + 5y)\)
+    \[
+        L =
+        \begin{pmatrix}
+            2 & 3\\
+            4 & 5
+        \end{pmatrix}.
+    \]
+\end{primer}
+
+\begin{definicija}
+    Ako je funkcija \(F: D_F \to \mathbb{R}^m\) (\(D_F \subseteq \mathbb{R}^n\))
+    diferencijabilna u tački \(a \in D_F\), tada za linearno preslikavanje 
+    \(L: \mathbb{R}^n \to \mathbb{R}^m\) koristimo oznaku
+    \[
+        dF(a)
+    \]
+    i nazivamo \textbf{diferencijal} funkcije \(f\).
+\end{definicija}
+\napomena{\(f: D_f \to \mathbb{R}\)} ako je diferencijabilna u \(a \in D_f\), linearno
+preslikavanje \(df(a): \mathbb{R}^n \to \mathbb{R}\) nazivamo diferencijal funkcije \(f\).
+
+
+\begin{definicija}
+    Matrica \(J = [\frac{\partial f_j}{\partial x_i}]\) se naziva 
+    \textbf{Jakobijeva matrica} vektorske funkcije \(F\).
+\end{definicija}
+\napomena{Specijalno ako je \(F:D_F \to \mathbb{R}^n \), (\(D_F \subseteq \mathbb{R}^n\)),
+onda je matrica dimenzije \(n \times x\), 
+tada se determinanta \(detJ\) naziva \textbf{Jakobijan}.}
+
+
+\begin{primer}
+    \(\\\)    
+    \begin{align*}
+        F(x, y) &= (2x + 3y, 4x + 5y) \\
+        det(J) &= 5 \cdot 2 - 3 \cdot 4 = 10 - 12 = -2.
+    \end{align*}
+
+
+\end{primer}
+
+\begin{stav}
+    Ako su funckije \(F, G: D \to \mathbb{R}^m\) (\(D \subseteq \mathbb{R}^n\))
+    diferencijabilne u \(a \in D\) tada je i \(\lambda_1 F + \lambda_2G\) diferencijabilna
+    u tački \(a \in D\)
+    \[
+        d(\lambda_1F + \lambda_2G)(a) = \lambda_1 \cdot dF(a) + \lambda_2 \cdot dG(a).
+    \]
+\end{stav}
+
+\begin{dokaz}
+    \begin{align*}
+        (\lambda_1F + \lambda_2G)(a + h) &= \lambda_1 \cdot F(a+h) + \lambda_2 \cdot G(a+h) \\
+        &= \lambda_1 \cdot (F(a) + dF(a)\cdot h + o(h)) + 
+        \lambda_2 \cdot (G(a) + dG(a) \cdot h + o(h)) \\
+        &= (\lambda_1F + \lambda_2G)(a) + (\underbrace{\lambda_1dF(a) + \lambda_2dG(a)}
+        _{d(\lambda_1F + \lambda_2G)(a)})\cdot h + 
+        \underbrace{\lambda_1o(h) + \lambda_2o(h)}_{o(h)}, \quad h \to 0
+    \end{align*}    
+\end{dokaz}
+
+\begin{stav}
+    Ako su \(fg: D \to \mathbb{R}^n\) (\(D \subseteq \mathbb{R}^n\)) diferencijabilne
+    u tački \(a \in D\) tada je i
+    \begin{enumerate}
+        \item \(f \cdot g\) diferencijabilna u \(a \in D\) i važi:
+        \[
+            d(fg)(a) = f(a) \cdot dg(a) + g(a) \cdot df(a),
+        \]
+        \item ako \(g(x) \neq 0\) \(\forall x \in D\) tada je i \(\frac{f}{g}\)
+        diferencijabilna u \(a \in D\) i važi:
+        \[
+            d\left(\frac{f}{g}\right)(a) = \frac{1}{g^2(a)}(g(a)\cdot df(a) - f(a) \cdot dg(a)).
+        \]
+    \end{enumerate}
+\end{stav}
+
+\subsection{Diferencijabilnost kompozicije}
+
+
+\begin{definicija}
+    Neka je funkcija \(F:D_F \to \mathbb{R}^m\) (\(D \subseteq \mathbb{R}^n\)) diferencijabilna
+    u tački \(a \in D_F\) i neka je funkcija \(G: D_G \to \mathbb{R}^p\) 
+    (\(D_G \subseteq \mathbb{R}^m\)) diferencijabilna u \(F(a)\) i \(F(D_F) \subseteq D_G\),
+    tada je kompozicija \(G \circ F: D_F \to \mathbb{R}^p \) diferencijabilna u tački
+    \(a \in D_F\) i važi
+    \[
+        d(G \circ F)(a) = dG(F(a)) \cdot dF(a).
+    \]
+\end{definicija}
+\napomena{\(\cdot\) je matrično množenje.}
+\begin{dokaz}
+    Treba pokazati \( G \circ F (a+h) = G\circ F(a) + 
+    \underbrace{d(G\circ F)(a)}_{dG(f(a)) \cdot dF(a)} \cdot h + o(h),
+    \quad h \to 0, \; h \in \real^n\) i treba pokazati
+    \(d(G\circ F)(a) = dG(F(a)) \cdot dF(a).\)
+
+    \begin{align*}
+        G\circ F(a+h) - G\circ F(a) &= G(F(a+h)) - G(F(a)) \\
+        \text{Neka je } k = F(a+h) - F(a), \quad k \in \real^m \\
+        G(F(a) - k) - G(F(a))& \\
+    \end{align*}
+\end{dokaz}
+
+\begin{primer}
+    \(\\\)
+    Neka su \(F: \real^2 \to \real^3, \; G: \real^3 \to \real \):
+    \begin{align*}
+        F(x, y) &= (x^2, 3x + 2y, 4y) \\
+        G(z_1, z_2, z_3) 7 &= (z_1 \cdot z_2 + z_3) \\
+    \end{align*}
+    Na osnovu teoreme \(G \circ F\) je diferencijabilna \(\forall x, y \in \real^2\) 
+    (zato što su i \(F\) i \(G\)). Nađimo \(d(G\circ F)(x,y)\):
+    \begin{enumerate}[label = \Roman*]
+        \item način
+            \begin{align*}
+                G\circ F (x,y) &= x^2 (3x + 2y) + 4x = 3x^3 + 2x^2y + 4x \\
+                d(G\circ F)(x,y) &= \left[ 9x^2 + 4xy + 4, \; 2x^2 \right]
+            \end{align*}
+    
+        \item način preko teoreme
+            \begin{align*}
+                d(G \circ F)(x,y) &= dG(F(x,y)) \cdot dF(x,y) \\
+                dG(z_1, z_2, z_3) &= \left[ z_2, z_1, 1 \right] \\
+                &= \left[ 3x+2y, x^2, 1 \right] \cdot
+                \begin{bmatrix}
+                    2x & 0 \\
+                    3 & 2  \\
+                    4 & 0
+                \end{bmatrix} \\
+                &= (3x+2y)\cdot 2x + 3x^2 +4, \; 2x^2 =
+                \begin{bmatrix}
+                    9x^2 + 4xy + 4 & 2x^2
+                \end{bmatrix}.
+            \end{align*}
+    \end{enumerate}
+\end{primer}
+
+\subsection{Izvodi inverzne funkcije}
+
+\begin{teorema}
+    Neka je funkcija \(F: D \to \real ^n\) (\(D \subseteq \real^n\)) diferencijabilna
+    i neka je funkcija \(F : D \to F(D)\) bijekcija i neka je
+    \(F^-1: F(D) \to D\) diferencijabilna, tada je
+    \[
+        dF^{-1} (F(x)) = d(F(x))^{-1}.
+    \]
+\end{teorema}
+\napomena{\(F: \real \to \real \) bijekcija i diferencijabilna, tada postoji
+\(F: \real \to \real \) koja ne mora biti diferencijabilna.
+
+Primer: \(f(x) = x^3\)
+
+\(f^{-1}(x) = \sqrt[3]{x} - \) nije diferencijabilna u tački \(x = 0\).}
+\begin{dokaz}
+    \begin{align*}
+        F \circ F^{-1} &= id: \real^n \to \real^n, \quad id(x_1, \dots, x_n) = (x_1, \dots, x_n) \\
+        F^{-1} \circ F &= id \\
+        d(F \circ F^{-1})(F(x)) &= dF(x) \cdot dF^{-1}(F(x)) =
+        \begin{bmatrix}
+            1 &  & 0 \\
+            &\ddots & \\
+            0 &  & 1 
+        \end{bmatrix} \\
+        d(F^{-1}\circ F)(x) &= dF^{-1}(F(x))dF(x) = 
+        \begin{bmatrix}
+            1 &  & 0 \\
+            &\ddots & \\
+            0 &  & 1 
+        \end{bmatrix} \\
+        dF^{-1}(F(x)) &= (dF(x))^{-1}.
+    \end{align*}
+\end{dokaz}
+
+\begin{primer}
+\(F(x,y) = (2x+3y,4x+5y)\)
+\begin{enumerate}[label = \Roman*]
+    \item način
+    \begin{align*}
+        (dF^{-1})(F(x)) = -\frac{1}{2} \cdot 
+        \begin{bmatrix}
+            5 & -3 \\ -4 & 2
+        \end{bmatrix} =
+        \begin{bmatrix}
+            \frac{-5}{2} & \frac{3}{2} \\ 2 & -1   
+        \end{bmatrix}
+    \end{align*}
+    \item način Domaći
+\end{enumerate}
+\end{primer}
+
+\subsection{Tangenta i tangentna ravan}
+
+\begin{definicija}
+    Neka je r\(r \; I \to \real^3\) (\(I \subseteq \real\)) diferencijabilno preslikavanje,
+    tada se \(r\) ili \(r(I)\) naziva \textbf{kriva} u \(\real^3\).
+\end{definicija}
+
+\begin{definicija}
+    Ako je \(r: I \to \real^3\) neprekidno diferencijabilno preslikavanje, onda se naziva
+    \textbf{glatka kriva}.
+\end{definicija}
+
+
+\begin{definicija}
+    Ako je \(r'(t) = (x'(t), y'(t), z'(t)) \neq (0, 0, 0) \; \forall t \in I\), onda je 
+    \(r\) \textbf{regularna kriva}.
+\end{definicija}
+
+\begin{definicija}
+    Neka je \(t\) tangenta na reglarnu krivu \(r\) u tački \(t_o\) ako prolazi kroz
+    \(r(t_0)\) i koeficijent pravca joj je \((x'(t), y'(t), z'(t))\).
+\end{definicija}
+
+\textbf{LAAG:}
+\[
+    \frac{x-x_0}{a}= \frac{y - y_0}{b} = \frac{z - z_0}{c}
+\]
+gde su \((a, b, c) \in \real^3\) koeficijenti pravca.
+
+Dakle tangenta \(t\) je zadata sa
+\[
+    \frac{x-x(t_0)}{x'(t_0)}= \frac{y - y(t_0)}{y'(t_0)} = \frac{z - z(t_0)}{z'(t_0)}
+\]
+
+\begin{primer}
+    
+    Neka je \(r: (-1, 1) \to \real^3\) i \(r(t) = (0, t, \sqrt{1 - t^2})\).
+    Odredimo tangentu u \(t = 0\).
+
+    \[\frac{x - 0}{0} = \frac{y - 0}{1} = \frac{z - 1}{0}\]
+    znači
+    \begin{align*}
+        1\cdot (z-1) &= 0\cdot(y-0)\\
+        z - 1 &= 0 \\
+        z &= 1
+    \end{align*}
+
+    \begin{center}
+        \begin{tikzpicture}[scale=2, line cap=round, line join=round]
+
+            % ose
+            \draw[->] (-1.2,0) -- (1.2,0) node[below left] {$y$};
+            \draw[->] (0,-0.2) -- (0,1.4) node[left] {$z$};
+            \draw[->] (0,0) -- (-0.7,-0.5) node[below] {$x$};
+
+            % ravnina x=0 (tj. yz-ravan, samo nagovestaj)
+            \draw[dashed, gray] (-1,0) -- (-1,1.2);
+            \draw[dashed, gray] (1,0) -- (1,1.2);
+            \draw[dashed, gray] (-1,1.2) -- (1,1.2);
+
+            % kriva r(t) = (0,t,sqrt(1-t^2))
+            % u yz-ravni: y=t, z=sqrt(1-t^2)
+            \draw[thick, domain=-1:1, samples=100, smooth, variable=\t]
+                plot ({\t},{sqrt(1-\t*\t)});
+
+            % tangenta z=1, x=0
+            \draw[thick] (-1,1) -- (1,1);
+
+            % tacka dodira
+            \fill (0,1) circle (0.8pt);
+            \node[above right] at (0,1) {$(0,0,1)$};
+
+            % oznaka tangente
+            \node[right] at (0.75,1.03) {$T$};
+
+        \end{tikzpicture}
+    \end{center}
+    \begin{align*}
+        z (t) &= \sqrt{1-t^2} \\
+        z(t) &= -\frac{z}{\sqrt{1-t^2}}
+    \end{align*}
+\end{primer}
+
+\begin{primer}
+   FALI %TODO - primer aa
+\end{primer}
+
+\begin{definicija}
+    Neka je funkcija \(f: D_f \to \real\) (\(D_f \subseteq \real^3\)) diferencijabilna,
+    tada se skup \(S = \{(x,y,z) \in \real^3 \mid f(x,y,z) = 0\}\) naziva \textbf{površi}.
+\end{definicija}
+
+\begin{definicija}
+    Ako je \(f\) neprikidno diferencijabilna funkcija tada je \(S\) \textbf{glatka površ}.
+\end{definicija}
+
+\begin{definicija}
+    Ako je gradijent \(\triangledown f(x,y,z) \neq (0,0,0)\) u svakoj 
+    \((x,y,z) \in S\), tada je \(S\) \textbf{regularna površ}.
+\end{definicija}
+
+\begin{primer}
+    \(f(x,y,z) = x^2+y^2+z^2=1\)
+    \begin{align*}
+        S &= \{(x,y,z) \in \real^3 \mid x^2+y^2+z^2=1\} \\
+        \triangledown f(x,y,z) &= (2x,2y,2z) \neq (0,0,0) \quad \forall (x,y,z) \in S.
+    \end{align*}
+\end{primer}
+
+\begin{definicija}
+    Tangentna ravan na regularnu površ \(S\) u tački \(x_0, y_0, z_0\)
+    je ravan koja sadrži tangente svih regularnih krivih \(r: I\to S\)
+     (\(S \subseteq \real^3\)) koje prolaze kroz tačku \(x_0, y_0, z_0\).
+\end{definicija}
+
+\textbf{LAAG:}
+
+Jednačina ravni kroz tačku \((x_0, y_0, z_0)\) kojoj je vektor normale
+\(n = (n_1, n_2, n_3)\) se analitički zapisuje 
+\(n_1(x-x_0) + n_2(y-y_0)+n_3(z-z_0) = 0\).
+
+\begin{stav}
+    Tangentna ravan na površ \(S\) u tački \(x_0, y_0, z_0\) ima vektor normale
+    \(n = \triangledown f (x_0, y_0, z_0)\), tojest tangentna ravan je skup svih 
+    pravih koje su ortogonalne na \(n = \triangledown f (x_0, y_0, z_0)\).
+\end{stav}
+
+\begin{dokaz}
+    
+    \begin{align*}
+        r: I \to S &= \{(x,y,z) \mid f(x,y,z) = 0\} \\
+        f \circ r(t) &= 0\\
+        f \circ R: I \to \real (I \subseteq \real) \quad df(r(t)) \cdot r'(t) &=
+        \begin{bmatrix}
+            \frac{\partial f}{\partial x} & \frac{\partial f}{\partial y} & \frac{\partial f}{\partial z}
+        \end{bmatrix}
+        \cdot r(t) \cdot \begin{bmatrix}
+            x'(t) \\ y'(t) \\ z'(t)
+        \end{bmatrix} \\
+        &= <\triangledown f(r(t), r'(t))> \\
+        &= 0 \\
+        \triangledown f(r(t)) &\perp r'(t) 
+    \end{align*}
+\end{dokaz}
+
+\begin{primer}
+    Naći tangentnu ravan na \(S = \{x^2+y^2+z^2=1\}\) u tački \(0,0,1\)
+    \begin{align*}
+        (n_1, n_2, n_3) &= \triangledown f(x,y,z) \\
+        &= (2x,2y,2z) \\
+        \triangledown f(0,0,1) &= (0,0,2) \\
+        \text{Tangentna ravan} \\
+        0(x-o) + 0(y-0) + 2(z-1) &= 0 \\
+        z &= 1 \\
+    \end{align*}
+    \begin{center}
+        \begin{tikzpicture}[scale=2.2, line cap=round, line join=round]
+
+    % koordinate za "3D" izgled
+    \def\R{1}
+    \def\PlaneY{1}
+    \def\PlaneH{0.32}
+    \def\PlaneW{1.15}
+    \def\TiltX{0.55}
+
+    % osa z
+    \draw[->] (0,-1.25) -- (0,1.45) node[left] {$z$};
+
+    % osa y
+    \draw[->] (-1.35,0) -- (1.35,0) node[right] {$y$};
+
+    % osa x
+    \draw[->] (0,0) -- (-0.85,-0.55) node[below] {$x$};
+
+    % sfera
+    \draw[thick] (0,0) circle (\R);
+
+    % "ekvator" sfere za 3D utisak
+    \draw[dashed] (-1,0) arc (180:360:1 and 0.28);
+    \draw        (-1,0) arc (180:0:1 and 0.28);
+
+    % tangentna ravan z=1
+    \coordinate (A) at (-\PlaneW,\PlaneY);
+    \coordinate (B) at (\PlaneW,\PlaneY);
+    \coordinate (C) at ({\PlaneW+\TiltX},{\PlaneY+\PlaneH});
+    \coordinate (D) at ({-\PlaneW+\TiltX},{\PlaneY+\PlaneH});
+
+    \fill[gray!5] (A) -- (B) -- (C) -- (D) -- cycle;
+    \draw[thick] (A) -- (B) -- (C) -- (D) -- cycle;
+
+    % tačka dodira
+    \fill (0,1) circle (0.9pt);
+    \node[right] at (0.03,1.03) {$(0,0,1)$};
+
+    % normala u tački dodira
+    \draw[->, thick] (0,1) -- (0,1.35);
+
+    % oznaka ravni
+    \node[right] at (1.18,1.02) {$z=1$};
+
+\end{tikzpicture}
+    \end{center}
+\end{primer}
+
+\end{document}
+
+
